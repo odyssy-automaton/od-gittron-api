@@ -44,20 +44,13 @@ functions:
           path: repos/{id}
           method: get
           cors: true
-  # update:
-  #   handler: repos/update.update
-  #   events:
-  #     - http:
-  #         path: repos/{id}
-  #         method: put
-  #         cors: true
-  # delete:
-  #   handler: repos/delete.delete
-  #   events:
-  #     - http:
-  #         path: repos/{id}
-  #         method: delete
-  #         cors: true
+  update:
+    handler: repos/update.update
+    events:
+      - http:
+          path: repos/{id}
+          method: put
+          cors: true
 
 resources:
   Resources:
