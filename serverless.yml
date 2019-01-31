@@ -60,6 +60,13 @@ functions:
           path: repos/registered/{repo}/{repoOwner}
           method: get
           cors: true
+  tokenuri:
+    handler: repos/tokenuri.tokenuri
+    events:
+      - http:
+          path: repos/tokenuri/{id}
+          method: get
+          cors: true
 
 resources:
   Resources:
