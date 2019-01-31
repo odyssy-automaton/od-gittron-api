@@ -1,3 +1,5 @@
+"use strict";
+
 const Octokit = require("@octokit/rest");
 
 class GitHubber {
