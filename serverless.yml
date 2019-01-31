@@ -2,6 +2,10 @@ service: od-gittron-api
 
 frameworkVersion: ">=1.1.0 <2.0.0"
 
+package:
+  exclude:
+    - test/**
+
 provider:
   name: aws
   runtime: nodejs8.10
@@ -50,6 +54,13 @@ functions:
       - http:
           path: repos/{id}
           method: put
+          cors: true
+  registered:
+    handler: repos/registered.registered
+    events:
+      - http:
+          path: repos/registered/{repo}/{repoOwner}
+          method: get
           cors: true
 
 resources:

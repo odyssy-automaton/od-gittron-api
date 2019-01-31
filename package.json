@@ -9,7 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@octokit/rest": "^16.13.4",
-    "uuid": "^3.3.2"
+    "@octokit/rest": "^16.13.4"
   }
 }
