@@ -1,6 +1,5 @@
 "use strict";
 
-const uuid = require("uuid");
 const AWS = require("aws-sdk");
 const Githubber = require("../util/githubber");
 
@@ -27,7 +26,6 @@ module.exports.create = (event, context, callback) => {
   });
 
   githubber.getRepo().then(res => {
-    console.log(res);
     const params = {
       TableName: process.env.DYNAMODB_TABLE,
       Item: {
