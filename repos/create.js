@@ -2,6 +2,7 @@
 
 const AWS = require("aws-sdk");
 const Githubber = require("../util/githubber");
+const MetaMaker = require("../util/metaMaker");
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
@@ -25,34 +26,49 @@ module.exports.create = (event, context, callback) => {
     owner: data.repoOwner
   });
 
-  githubber.getRepo().then(res => {
-    const params = {
-      TableName: process.env.DYNAMODB_TABLE,
-      Item: {
-        id: res.id.toString(),
-        repo: data.repo,
-        repoOwner: data.repoOwner,
-        createdAt: timestamp,
-        updatedAt: timestamp
-      }
-    };
+  githubber
+    .getRepo()
+    .catch(err => {
+      callback(null, {
+        statusCode: err.status || 501,
+        headers: { "Content-Type": "text/plain" },
+        body: "Repo doesn't exist"
+      });
+      return;
+    })
+    .then(res => {
+      // TODO: error handling
+      // TODO: save the token metadata in subtable
+      const metaMaker = new MetaMaker(res);
 
-    dynamoDb.put(params, error => {
-      if (error) {
-        console.error(error);
-        callback(null, {
-          statusCode: error.statusCode || 501,
-          headers: { "Content-Type": "text/plain" },
-          body: "Couldn't create the repo."
-        });
-        return;
-      }
-
-      const response = {
-        statusCode: 200,
-        body: JSON.stringify(params.Item)
+      const params = {
+        TableName: process.env.DYNAMODB_TABLE,
+        Item: {
+          id: res.id.toString(),
+          repo: data.repo,
+          repoOwner: data.repoOwner,
+          metaData: metaMaker.generateMetaData(),
+          createdAt: timestamp,
+          updatedAt: timestamp
+        }
       };
-      callback(null, response);
+
+      dynamoDb.put(params, error => {
+        if (error) {
+          console.error(error);
+          callback(null, {
+            statusCode: error.statusCode || 501,
+            headers: { "Content-Type": "text/plain" },
+            body: "Couldn't create the repo."
+          });
+          return;
+        }
+
+        const response = {
+          statusCode: 200,
+          body: JSON.stringify(params.Item)
+        };
+        callback(null, response);
+      });
     });
-  });
 };

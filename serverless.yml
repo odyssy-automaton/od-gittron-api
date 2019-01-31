@@ -32,7 +32,6 @@ functions:
           path: repos
           method: post
           cors: true
-
   list:
     handler: repos/list.list
     events:
@@ -40,7 +39,6 @@ functions:
           path: repos
           method: get
           cors: true
-
   get:
     handler: repos/get.get
     events:
