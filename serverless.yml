@@ -60,6 +60,13 @@ functions:
           path: tokens/uri/{ghid}/{uuid}
           method: get
           cors: true
+  generateSvg:
+    handler: tokens/generate-svg.generateSvg
+    events:
+      - http:
+          path: generatesvg
+          method: get
+          cors: true
 #   # update:
 #   #   handler: repos/update.update
 #   #   events:

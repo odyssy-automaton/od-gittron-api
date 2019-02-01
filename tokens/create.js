@@ -4,10 +4,6 @@ const AWS = require("aws-sdk");
 const Githubber = require("../util/githubber");
 const MetaMaker = require("../util/metaMaker");
 
-var lambda = new AWS.Lambda({
-  region: "us-east-1"
-});
-
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 const generateUUID = data => {
@@ -35,6 +31,8 @@ module.exports.create = (event, context, callback) => {
     repo: data.repo,
     owner: data.repoOwner
   });
+
+  // TODO: repo not found not working - better validation
 
   githubber
     .generateMetaData()
@@ -66,25 +64,6 @@ module.exports.create = (event, context, callback) => {
           updatedAt: timestamp
         }
       };
-
-      //TODO: need to pass the raw metadata through a prep for flattner/not sure which to save to db yet
-
-      // lambda.invoke(
-      //   {
-      //     FunctionName: "fetch-file-and-store-in-s3-dev-phantomflatr",
-      //     Payload: JSON.stringify({ id: res.id, msg: "poopin" }, null, 2) // pass params
-      //   },
-      //   function(error, data) {
-      //     if (error) {
-      //       console.log(error);
-      //       // context.done("error", error);
-      //     }
-      //     if (data.Payload) {
-      //       console.log(data.Payload);
-      //       // context.succeed(data.Payload);
-      //     }
-      //   }
-      // );
 
       dynamoDb.put(params, error => {
         if (error) {
