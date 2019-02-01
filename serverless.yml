@@ -1,4 +1,4 @@
-service: od-gittron-api
+service: od-gittron-tokens-api
 
 frameworkVersion: ">=1.1.0 <2.0.0"
 
@@ -26,60 +26,64 @@ provider:
 
 functions:
   create:
-    handler: repos/create.create
+    handler: tokens/create.create
     events:
       - http:
-          path: repos
+          path: tokens
           method: post
           cors: true
   list:
-    handler: repos/list.list
+    handler: tokens/list.list
     events:
       - http:
-          path: repos
+          path: tokens
           method: get
           cors: true
   get:
-    handler: repos/get.get
+    handler: tokens/get.get
     events:
       - http:
-          path: repos/{id}
+          path: tokens/{ghid}/{uuid}
           method: get
           cors: true
-  update:
-    handler: repos/update.update
+  getByRepo:
+    handler: tokens/get-by-repo.getByRepo
     events:
       - http:
-          path: repos/{id}
-          method: put
-          cors: true
-  registered:
-    handler: repos/registered.registered
-    events:
-      - http:
-          path: repos/registered/{repo}/{repoOwner}
+          path: tokens/repo/{ghid}
           method: get
           cors: true
-  tokenuri:
-    handler: repos/tokenuri.tokenuri
+  tokenUri:
+    handler: tokens/token-uri.tokenUri
     events:
       - http:
-          path: repos/tokenuri/{id}
+          path: tokens/uri/{ghid}/{uuid}
           method: get
           cors: true
+#   # update:
+#   #   handler: repos/update.update
+#   #   events:
+#   #     - http:
+#   #         path: repos/{id}
+#   #         method: put
+#   #         cors: true
 
 resources:
   Resources:
-    ReposDynamoDbTable:
+    TokensDynamoDbTable:
       Type: "AWS::DynamoDB::Table"
       DeletionPolicy: Retain
       Properties:
         AttributeDefinitions:
-          - AttributeName: id
+          - AttributeName: ghid
+            AttributeType: S
+          - AttributeName: uuid
             AttributeType: S
         KeySchema:
-          - AttributeName: id
+          - AttributeName: ghid
             KeyType: HASH
+          - AttributeName: uuid
+            KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
