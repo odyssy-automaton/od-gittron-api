@@ -4,6 +4,10 @@ const AWS = require("aws-sdk");
 const Githubber = require("../util/githubber");
 const MetaMaker = require("../util/metaMaker");
 
+var lambda = new AWS.Lambda({
+  region: "us-east-1"
+});
+
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 module.exports.create = (event, context, callback) => {
@@ -52,6 +56,23 @@ module.exports.create = (event, context, callback) => {
           updatedAt: timestamp
         }
       };
+
+      lambda.invoke(
+        {
+          FunctionName: "fetch-file-and-store-in-s3-dev-phantomflatr",
+          Payload: JSON.stringify({ id: res.id, msg: "poopin" }, null, 2) // pass params
+        },
+        function(error, data) {
+          if (error) {
+            console.log(error);
+            // context.done("error", error);
+          }
+          if (data.Payload) {
+            console.log(data.Payload);
+            // context.succeed(data.Payload);
+          }
+        }
+      );
 
       dynamoDb.put(params, error => {
         if (error) {
