@@ -29,16 +29,20 @@ class GitHubber {
       });
   }
 
+  // getRepo() {
+  //   return this.octokit.repos
+  //     .get(this.gitHubOptions)
+  //     .then(res => {
+  //       return res.data;
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //       return err;
+  //     });
+  // }
+
   getRepo() {
-    return this.octokit.repos
-      .get(this.gitHubOptions)
-      .then(res => {
-        return res.data;
-      })
-      .catch(err => {
-        console.log(err);
-        return err;
-      });
+    return this.octokit.repos.get(this.gitHubOptions);
   }
 
   getById(id) {

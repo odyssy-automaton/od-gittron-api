@@ -1,34 +1,39 @@
-// const Githubber = require("./githubber");
+"use strict";
 
 const Octokit = require("@octokit/rest");
 const Sentiment = require("sentiment");
 const moment = require("moment");
 
-class CreatureMaker {
-  constructor(repo) {
-    // this.githubber = new Githubber({
-    //   repo: repo.repo,
-    //   owner: repo.owner
-    // });
+class GitHubData {
+  constructor(gitHubOptions) {
+    console.log(process.env.GH_CLIENT_ID);
 
     this.octokit = new Octokit({
       clientId: process.env.GH_CLIENT_ID,
       clientSecret: process.env.GH_CLIENT_SECRET
     });
-    this.gitHubOptions = repo;
+    this.gitHubOptions = gitHubOptions;
+    this.repoData = {};
     this.sentiment = new Sentiment();
   }
 
-  async generateCreatureData() {
-    const { data } = await this.octokit.repos.get(this.gitHubOptions);
-    const stars = data.stargazers_count + data.watchers_count;
-    const commitSpeed = await this.commitsPer(data, "days");
+  getRepo() {
+    return this.octokit.repos.get(this.gitHubOptions);
+  }
+
+  getById(id) {
+    return this.octokit.request("GET /repositories/:id", { id });
+  }
+
+  async generateStats() {
+    const stars = this.repoData.stargazers_count + this.repoData.watchers_count;
+    const commitSpeed = await this.commitsPer(this.repoData, "days");
 
     const sentiment = await this.getSentiment();
 
     return {
-      ghid: data.id,
-      language: data.language.toLowerCase(),
+      ghid: this.repoData.id,
+      language: this.repoData.language.toLowerCase(),
       stars,
       commitSpeed,
       sentiment
@@ -62,8 +67,8 @@ class CreatureMaker {
     };
     const result = this.sentiment.analyze(message, options);
 
-    // return result.comparative
-    return result.score;
+    return result.comparative;
+    // return result.score;
   }
 
   async listCommits() {
@@ -83,4 +88,4 @@ class CreatureMaker {
   }
 }
 
-module.exports = CreatureMaker;
+module.exports = GitHubData;

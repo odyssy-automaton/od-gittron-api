@@ -14,7 +14,7 @@ const generateUUID = data => {
 
 module.exports.create = (event, context, callback) => {
   const timestamp = new Date().getTime();
-  const data = JSON.parse(event.body);
+  const data = JSON.parse(event);
 
   // TODO: better validation - expecting tokenType === base/contributor/supporter
   if (typeof data.repo !== "string" || !data.tokenType) {

@@ -1,18 +1,11 @@
-// const Octokit = require("@octokit/rest");
+"use strict";
 
-class MetaMaker {
-  constructor(repoData) {
-    this.repoData = repoData;
-  }
+const generateTokenID = (repoData, tokenType) => {
+  //TODO: Need a way to infer/get generation
+  const generation = 0;
+  return `${repoData.id}-${tokenType}-${generation}`;
+};
 
-  generateMetaData() {
-    // const metaData = {
-    //   size: this.repoData.size
-    // };
-    // return metaData;
-
-    return JSON.stringify(this.repoData);
-  }
-}
-
-module.exports = MetaMaker;
+module.exports = {
+  generateTokenID
+};

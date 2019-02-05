@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const CreatureMaker = require("../util/creature-maker");
 const { creatureMappings } = require("../util/creature-mappings");
 const { languageMapping } = require("../util/mapping-objects");
