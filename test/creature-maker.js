@@ -9,19 +9,31 @@ Number.prototype.between = function(a, b) {
   return this > min && this < max;
 };
 
-const mapToSvg = data => {
-  const svgs = [];
-  const languageSvg = creatureMappings.body.rangeMapping.find(r => {
-    return languageMapping[data.language].between(r.range[0], r.range[1]);
-  });
+const processParts = data => {
+  //TODO: this relies on the order of entries to layer the svgs
+  colors = [];
+  svgs = [];
+  Object.entries(creatureMappings).forEach(section => {
+    let dataSource = data[section[1].dataSource];
+    if (section[1].randomAssignment)
+      dataSource = creatureMaker.getRandomInt(99);
+    console.log(dataSource);
 
-  svgs[creatureMappings.body.layerIndex] = languageSvg.svg;
+    // const res = mapToSvg(data.Source, section[0]);
+    // if (res.color) colors[section.layerOrder] = res.color;
+    // if (res.svg) svgs[section.layerOrder] = res.svg;
+  });
 
   return {
     svgs,
-    name: data.ghid,
-    timeout: 1000
+    colors
   };
+};
+
+const mapToSvg = (data, section) => {
+  return creatureMappings[section].rangeMapping.find(r => {
+    return languageMapping[data].between(r.range[0], r.range[1]);
+  });
 };
 
 const github = {
@@ -34,7 +46,8 @@ const creatureMaker = new CreatureMaker(github);
 creatureMaker
   .generateCreatureData()
   .then(res => {
-    const result = mapToSvg(res);
+    const result = processParts(res);
+
     console.log(result);
   })
   .catch(err => {

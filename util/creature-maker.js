@@ -1,5 +1,5 @@
 // const Githubber = require("./githubber");
-require("dotenv").config();
+
 const Octokit = require("@octokit/rest");
 const Sentiment = require("sentiment");
 const moment = require("moment");
@@ -10,6 +10,8 @@ class CreatureMaker {
     //   repo: repo.repo,
     //   owner: repo.owner
     // });
+    console.log(process.env.GH_CLIENT_ID);
+
     this.octokit = new Octokit({
       clientId: process.env.GH_CLIENT_ID,
       clientSecret: process.env.GH_CLIENT_SECRET
@@ -75,6 +77,10 @@ class CreatureMaker {
     const allMessages = result.data.map(c => c.commit.message).join(". ");
 
     return allMessages;
+  }
+
+  getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
   }
 }
 

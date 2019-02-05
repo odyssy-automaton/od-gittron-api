@@ -1,6 +1,8 @@
 const creatureMappings = {
   body: {
     layerIndex: 0,
+    randomAssignment: false,
+    dataSource: "language",
     rangeMapping: [
       {
         range: [0, 9],
@@ -26,6 +28,8 @@ const creatureMappings = {
   },
   legs: {
     layerOrder: 1,
+    randomAssignment: true,
+    dataSource: "commitSpeed",
     rangeMapping: [
       {
         range: [0, 9],
@@ -51,6 +55,8 @@ const creatureMappings = {
   },
   arms: {
     layerOrder: 2,
+    randomAssignment: true,
+    dataSource: "stars",
     rangeMapping: [
       {
         range: [0, 9],
@@ -76,6 +82,8 @@ const creatureMappings = {
   },
   head: {
     layerOrder: 3,
+    randomAssignment: true,
+    dataSource: "sentiment",
     rangeMapping: [
       {
         range: [0, 9],
@@ -100,50 +108,54 @@ const creatureMappings = {
     ]
   },
   primaryColor: {
+    layerOrder: 0,
+    randomAssignment: true,
     rangeMapping: [
       {
         range: [0, 9],
-        color: ""
+        color: "#111111"
       },
       {
         range: [10, 19],
-        color: ""
+        color: "#222222"
       },
       {
         range: [20, 29],
-        color: ""
+        color: "#333333"
       },
       {
         range: [30, 39],
-        color: ""
+        color: "#444444"
       },
       {
         range: [40, 99],
-        color: ""
+        color: "#555555"
       }
     ]
   },
   secondaryColor: {
+    layerOrder: 1,
+    randomAssignment: true,
     rangeMapping: [
       {
         range: [0, 9],
-        color: ""
+        color: "#666666"
       },
       {
         range: [10, 19],
-        color: ""
+        color: "#777777"
       },
       {
         range: [20, 29],
-        color: ""
+        color: "888888"
       },
       {
         range: [30, 39],
-        color: ""
+        color: "999999"
       },
       {
         range: [40, 99],
-        color: ""
+        color: "121212"
       }
     ]
   }
