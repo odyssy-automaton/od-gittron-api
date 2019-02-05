@@ -2,7 +2,7 @@
 
 const AWS = require("aws-sdk");
 const Githubber = require("../util/githubber");
-const MetaMaker = require("../util/metaMaker");
+const MetaMaker = require("../util/meta-maker");
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
@@ -33,7 +33,6 @@ module.exports.create = (event, context, callback) => {
   });
 
   // TODO: repo not found not working - better validation
-
   githubber
     .generateMetaData()
     .catch(err => {

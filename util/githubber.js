@@ -12,15 +12,15 @@ class GitHubber {
     return this.octokit.repos
       .get(this.gitHubOptions)
       .then(res => {
+        //
         return {
           ghid: res.data.id,
-          updatedAt: res.data.updated_at,
-          createdAt: res.data.created_at,
-          size: res.data.size,
-          stars: res.data.stargazers_count,
-          watchers: res.data.watchers_count,
-          primaryLanguage: res.data.language,
-          openIssues: res.data.open_issues_count
+          primaryLanguage: res.data.language
+          // updatedAt: res.data.updated_at,
+          // createdAt: res.data.created_at,
+          // size: res.data.size,
+          // stars: res.data.stargazers_count,
+          // watchers: res.data.watchers_count,
         };
       })
       .catch(err => {
@@ -45,6 +45,18 @@ class GitHubber {
     return this.octokit.request("GET /repositories/:id", { id }).then(res => {
       return res.data;
     });
+  }
+
+  getCommitCount() {
+    const result = this.octokit.repos
+      .getParticipationStats(this.gitHubOptions)
+      .then(res => {
+        return res.data.all.reduce((sum, currentValue) => sum + currentValue);
+      })
+      .catch(err => {
+        console.log(err);
+        return err;
+      });
   }
 }
 

@@ -9,6 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@octokit/rest": "^16.13.4"
+    "@octokit/rest": "^16.13.4",
+    "dotenv": "^6.2.0",
+    "moment": "^2.24.0",
+    "sentiment": "^5.0.1"
   }
 }

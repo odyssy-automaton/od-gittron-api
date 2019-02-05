@@ -67,6 +67,13 @@ functions:
           path: generatesvg
           method: get
           cors: true
+  generateCreature:
+    handler: tokens/generate-creature.generateCreature/{ghid}/{uuid}
+    events:
+      - http:
+          path: generatecreature
+          method: get
+          cors: true
 #   # update:
 #   #   handler: repos/update.update
 #   #   events:
