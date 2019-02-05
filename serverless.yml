@@ -32,53 +32,39 @@ functions:
           path: tokens/new
           method: post
           cors: true
-  # create:
-  #   handler: tokens/create.create
-  #   events:
-  #     - http:
-  #         path: tokens
-  #         method: post
-  #         cors: true
-  # list:
-  #   handler: tokens/list.list
-  #   events:
-  #     - http:
-  #         path: tokens
-  #         method: get
-  #         cors: true
-  # get:
-  #   handler: tokens/get.get
-  #   events:
-  #     - http:
-  #         path: tokens/{ghid}/{uuid}
-  #         method: get
-  #         cors: true
-  # getByRepo:
-  #   handler: tokens/get-by-repo.getByRepo
-  #   events:
-  #     - http:
-  #         path: tokens/repo/{ghid}
-  #         method: get
-  #         cors: true
-  # tokenUri:
-  #   handler: tokens/token-uri.tokenUri
-  #   events:
-  #     - http:
-  #         path: tokens/uri/{ghid}/{uuid}
-  #         method: get
-  #         cors: true
+  list:
+    handler: tokens/list.list
+    events:
+      - http:
+          path: tokens
+          method: get
+          cors: true
+  get:
+    handler: tokens/get.get
+    events:
+      - http:
+          path: tokens/{ghid}/{tokenid}
+          method: get
+          cors: true
+  getByRepo:
+    handler: tokens/get-by-repo.getByRepo
+    events:
+      - http:
+          path: tokens/repo/{ghid}
+          method: get
+          cors: true
+  tokenUri:
+    handler: tokens/token-uri.tokenUri
+    events:
+      - http:
+          path: tokens/uri/{ghid}/{tokenid}
+          method: get
+          cors: true
   # generateSvg:
   #   handler: tokens/generate-svg.generateSvg
   #   events:
   #     - http:
   #         path: generatesvg
-  #         method: get
-  #         cors: true
-  # generateCreature:
-  #   handler: tokens/generate-creature.generateCreature/{ghid}/{uuid}
-  #   events:
-  #     - http:
-  #         path: generatecreature
   #         method: get
   #         cors: true
 #   # update:
