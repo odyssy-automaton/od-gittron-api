@@ -9,7 +9,7 @@ module.exports.get = (event, context, callback) => {
     TableName: process.env.DYNAMODB_TABLE,
     Key: {
       ghid: event.pathParameters.ghid,
-      uuid: event.pathParameters.uuid
+      tokenId: event.pathParameters.tokenid
     }
   };
 

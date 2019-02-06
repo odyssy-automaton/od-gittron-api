@@ -1,4 +1,4 @@
-service: od-gittron-tokens-api
+service: gittron-api
 
 frameworkVersion: ">=1.1.0 <2.0.0"
 
@@ -25,11 +25,11 @@ provider:
       Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
 
 functions:
-  create:
-    handler: tokens/create.create
+  initToken:
+    handler: tokens/init-token.initToken
     events:
       - http:
-          path: tokens
+          path: tokens/new
           method: post
           cors: true
   list:
@@ -43,7 +43,7 @@ functions:
     handler: tokens/get.get
     events:
       - http:
-          path: tokens/{ghid}/{uuid}
+          path: tokens/{ghid}/{tokenid}
           method: get
           cors: true
   getByRepo:
@@ -57,16 +57,16 @@ functions:
     handler: tokens/token-uri.tokenUri
     events:
       - http:
-          path: tokens/uri/{ghid}/{uuid}
+          path: tokens/uri/{ghid}/{tokenid}
           method: get
           cors: true
-  generateSvg:
-    handler: tokens/generate-svg.generateSvg
-    events:
-      - http:
-          path: generatesvg
-          method: get
-          cors: true
+  # generateSvg:
+  #   handler: tokens/generate-svg.generateSvg
+  #   events:
+  #     - http:
+  #         path: generatesvg
+  #         method: get
+  #         cors: true
 #   # update:
 #   #   handler: repos/update.update
 #   #   events:
@@ -84,12 +84,12 @@ resources:
         AttributeDefinitions:
           - AttributeName: ghid
             AttributeType: S
-          - AttributeName: uuid
+          - AttributeName: tokenId
             AttributeType: S
         KeySchema:
           - AttributeName: ghid
             KeyType: HASH
-          - AttributeName: uuid
+          - AttributeName: tokenId
             KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1

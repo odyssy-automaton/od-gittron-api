@@ -17,7 +17,8 @@ module.exports.generateSvg = (event, context, callback) => {
       "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Head--1.svg"
     ],
     name: "test123",
-    timeout: 1000
+    timeout: 1000,
+    css: "https://s3.amazonaws.com/odyssy-assets/bots/css.css"
   };
 
   lambda.invoke(
