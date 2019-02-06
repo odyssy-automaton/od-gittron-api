@@ -4,6 +4,7 @@ jspm_packages
 
 .env
 test/.env
+.dev-notes
 
 # Serverless directories
 .serverless

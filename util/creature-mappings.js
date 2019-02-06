@@ -27,7 +27,7 @@ const creatureMappings = {
     ]
   },
   legs: {
-    layerOrder: 1,
+    layerIndex: 1,
     randomAssignment: true,
     dataSource: "commitSpeed",
     rangeMapping: [
@@ -54,7 +54,7 @@ const creatureMappings = {
     ]
   },
   arms: {
-    layerOrder: 2,
+    layerIndex: 2,
     randomAssignment: true,
     dataSource: "stars",
     rangeMapping: [
@@ -81,7 +81,7 @@ const creatureMappings = {
     ]
   },
   head: {
-    layerOrder: 3,
+    layerIndex: 3,
     randomAssignment: true,
     dataSource: "sentiment",
     rangeMapping: [
@@ -108,7 +108,7 @@ const creatureMappings = {
     ]
   },
   primaryColor: {
-    layerOrder: 0,
+    layerIndex: 0,
     randomAssignment: true,
     rangeMapping: [
       {
@@ -134,7 +134,7 @@ const creatureMappings = {
     ]
   },
   secondaryColor: {
-    layerOrder: 1,
+    layerIndex: 1,
     randomAssignment: true,
     rangeMapping: [
       {

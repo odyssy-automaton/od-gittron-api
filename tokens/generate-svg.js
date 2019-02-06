@@ -1,6 +1,7 @@
 "use strict";
 
 const AWS = require("aws-sdk");
+const { generateSvgPayload } = require("../util/meta-maker");
 
 const lambda = new AWS.Lambda({
   region: "us-east-1"
@@ -35,14 +36,10 @@ module.exports.generateSvg = async (event, context) => {
     const { Item } = await getItem;
 
     //TODO: now just gen these - see creature-mappings.js
+    const { svgs, colors } = generateSvgPayload(Item.tokenUriData.meta);
 
     const payload = {
-      svgs: [
-        "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Arms--1.svg",
-        "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Body--1.svg",
-        "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Legs--2.svg",
-        "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Head--1.svg"
-      ],
+      svgs,
       name: Item.tokenId,
       timeout: 1000
     };
