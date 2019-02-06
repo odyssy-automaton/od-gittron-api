@@ -35,21 +35,36 @@ module.exports.generateSvg = async (event, context) => {
   try {
     const { Item } = await getItem;
 
-    //TODO: now just gen these - see creature-mappings.js
-    const { svgs, colors } = generateSvgPayload(Item.tokenUriData.meta);
+    const { svgs, colors } = generateSvgPayload(Item.dna);
 
-    const payload = {
+    const htmlGenPayload = {
+      outputName: Item.tokenId,
+      primaryColor: colors[0],
+      secondaryColor: colors[1],
+      name: Item.repo
+    };
+    const html = await lambda
+      .invoke({
+        FunctionName: "od-sls-htmlgen-dev-htmlgen",
+        Payload: JSON.stringify(htmlGenPayload, null, 2)
+      })
+      .promise();
+
+    const htmlRes = JSON.parse(html.Payload);
+
+    const svgGenPayload = {
       svgs,
+      html: htmlRes.url,
       name: Item.tokenId,
       timeout: 1000
     };
 
-    const svgReq = {
-      FunctionName: "od-sls-svgflatr-dev-phantomsvgflatr",
-      Payload: JSON.stringify(payload, null, 2)
-    };
-
-    const svgData = await lambda.invoke(svgReq).promise();
+    const svgData = await lambda
+      .invoke({
+        FunctionName: "od-sls-svgflatr-dev-phantomsvgflatr",
+        Payload: JSON.stringify(svgGenPayload, null, 2)
+      })
+      .promise();
 
     return {
       statusCode: 200,

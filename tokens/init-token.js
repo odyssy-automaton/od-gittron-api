@@ -3,7 +3,7 @@ require("dotenv").config();
 
 const AWS = require("aws-sdk");
 const GitHubData = require("../util/github-data");
-const { generateTokenID } = require("../util/meta-maker");
+const { generateTokenID, generateDNA } = require("../util/meta-maker");
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
@@ -29,13 +29,25 @@ module.exports.initToken = async (event, context) => {
   try {
     const { data } = await githubber.getRepo();
     githubber.repoData = data;
-    const tokenId = generateTokenID(githubber.repoData, reqData.tokenType);
+
+    //TODO: Change hard coded generation
+    const generation = reqData.generation || 0;
+
+    const tokenId = generateTokenID(
+      githubber.repoData,
+      reqData.tokenType,
+      generation
+    );
+
     const stats = await githubber.generateStats();
 
-    const results = {
+    const dna = generateDNA(stats, generation);
+
+    //TODO: Add from name generator
+    const tokenUriData = {
       name: tokenId,
       description: githubber.repoData.description,
-      image: `https://s3.aws/somepath/${tokenId}.png`,
+      image: `https://s3.amazonaws.com/od-flat-svg/${tokenId}.png`,
       meta: stats
     };
 
@@ -46,9 +58,12 @@ module.exports.initToken = async (event, context) => {
         tokenId: tokenId.toString(),
         repo: reqData.repo,
         repoOwner: reqData.repoOwner,
-        tokenUriData: results,
+        tokenUriData: tokenUriData,
         createdAt: timestamp,
-        updatedAt: timestamp
+        updatedAt: timestamp,
+        tokenType: reqData.tokenType,
+        generation,
+        dna
       }
     };
 

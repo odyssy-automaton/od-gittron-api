@@ -1,11 +1,11 @@
 const mappingObjects = {
   language: {
+    solidity: 0,
     javascript: 1,
-    python: 11,
-    go: 21,
-    java: 31,
+    python: 2,
+    go: 3,
+    java: 4,
     typescript: 41,
-    solidity: 51,
     shell: 61,
     html: 81,
     css: 82,

@@ -1,33 +1,35 @@
 const creatureMappings = {
   body: {
     layerIndex: 0,
+    dnaIndex: 2,
     randomAssignment: false,
     dataSource: "language",
     rangeMapping: [
       {
-        range: [0, 9],
+        range: [0, 0],
         svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Body--1.svg"
       },
       {
-        range: [10, 19],
+        range: [1, 1],
         svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Body--2.svg"
       },
       {
-        range: [20, 29],
+        range: [2, 2],
         svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Body--3.svg"
       },
       {
-        range: [30, 39],
+        range: [3, 3],
         svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Body--4.svg"
       },
       {
-        range: [40, 99],
+        range: [4, 99],
         svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Body--5.svg"
       }
     ]
   },
   legs: {
     layerIndex: 1,
+    dnaIndex: 4,
     randomAssignment: true,
     dataSource: "commitSpeed",
     rangeMapping: [
@@ -55,6 +57,7 @@ const creatureMappings = {
   },
   arms: {
     layerIndex: 2,
+    dnaIndex: 3,
     randomAssignment: true,
     dataSource: "stars",
     rangeMapping: [
@@ -82,6 +85,7 @@ const creatureMappings = {
   },
   head: {
     layerIndex: 3,
+    dnaIndex: 1,
     randomAssignment: true,
     dataSource: "sentiment",
     rangeMapping: [
@@ -109,53 +113,55 @@ const creatureMappings = {
   },
   primaryColor: {
     layerIndex: 0,
+    dnaIndex: 5,
     randomAssignment: true,
     rangeMapping: [
       {
         range: [0, 9],
-        color: "#111111"
+        color: "#f47142"
       },
       {
         range: [10, 19],
-        color: "#222222"
+        color: "#b58939"
       },
       {
         range: [20, 29],
-        color: "#333333"
+        color: "#ede742"
       },
       {
         range: [30, 39],
-        color: "#444444"
+        color: "#b1e540"
       },
       {
         range: [40, 99],
-        color: "#555555"
+        color: "#48dd40"
       }
     ]
   },
   secondaryColor: {
     layerIndex: 1,
+    dnaIndex: 6,
     randomAssignment: true,
     rangeMapping: [
       {
         range: [0, 9],
-        color: "#666666"
+        color: "#3ff4a3"
       },
       {
         range: [10, 19],
-        color: "#777777"
+        color: "#38f7e4"
       },
       {
         range: [20, 29],
-        color: "888888"
+        color: "#31b3f9"
       },
       {
         range: [30, 39],
-        color: "999999"
+        color: "#2e4bf2"
       },
       {
         range: [40, 99],
-        color: "121212"
+        color: "#6629e8"
       }
     ]
   }
@@ -164,23 +170,3 @@ const creatureMappings = {
 module.exports = {
   creatureMappings
 };
-
-// // to select a 'string' based body part svg
-// const bodySvg = mapping.body[repo.stats.language];
-
-// // to select a 'number' based body part svg
-// const matchingRange = mapping.arms.ranges.find(r => {
-//   return repo.stats.pullsCount.between(r.range[0], r.range[1]);
-// });
-// const legsSvg = matchingRange.svg;
-
-// Number.prototype.between = (a, b) => {
-//   var min = Math.min(a, b),
-//     max = Math.max(a, b);
-
-//   return this > min && this < max;
-// };
-
-// const repoStats = {
-//   b
-// };
