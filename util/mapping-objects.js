@@ -5,6 +5,7 @@ const mappingObjects = {
     python: 2,
     go: 3,
     java: 4,
+    ruby: 5,
     typescript: 41,
     shell: 61,
     html: 81,

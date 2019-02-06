@@ -14,7 +14,7 @@ const generateDNA = (repoData, generation) => {
     let dnaString = repoData[section[1].dataSource];
 
     if (typeof dnaString === "string") {
-      dnaString = mappingObjects[section[1].dataSource][dnaString];
+      dnaString = mappingObjects[section[1].dataSource][dnaString] || 99;
     }
     if (section[1].randomAssignment) {
       dnaString = getRandomInt(99);

@@ -52,7 +52,11 @@ class GitHubData {
       this.gitHubOptions
     );
 
-    return result.data.all.reduce((sum, currentValue) => sum + currentValue);
+    if (!result.data.all) {
+      return 0
+    } else {
+      return result.data.all.reduce((sum, currentValue) => sum + currentValue);
+    }
   }
 
   async getSentiment() {
