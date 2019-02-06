@@ -6,8 +6,6 @@ const moment = require("moment");
 
 class GitHubData {
   constructor(gitHubOptions) {
-    console.log(process.env.GH_CLIENT_ID);
-
     this.octokit = new Octokit({
       clientId: process.env.GH_CLIENT_ID,
       clientSecret: process.env.GH_CLIENT_SECRET
@@ -81,10 +79,6 @@ class GitHubData {
     const allMessages = result.data.map(c => c.commit.message).join(". ");
 
     return allMessages;
-  }
-
-  getRandomInt(max) {
-    return Math.floor(Math.random() * Math.floor(max));
   }
 }
 

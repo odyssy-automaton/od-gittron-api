@@ -24,10 +24,18 @@ module.exports.tokenUri = (event, context, callback) => {
       return;
     }
 
-    const response = {
-      statusCode: 200,
-      body: JSON.stringify(result.tokenUriData)
-    };
-    callback(null, response);
+    if (result.Item) {
+      const response = {
+        statusCode: 200,
+        body: JSON.stringify(result.Item.tokenUriData)
+      };
+      callback(null, response);
+    } else {
+      const response = {
+        statusCode: 200,
+        body: "no robo"
+      };
+      callback(null, response);
+    }
   });
 };

@@ -1,51 +1,85 @@
 "use strict";
 
 const AWS = require("aws-sdk");
+const { generateSvgPayload } = require("../util/meta-maker");
 
-var lambda = new AWS.Lambda({
+const lambda = new AWS.Lambda({
   region: "us-east-1"
 });
 
-module.exports.generateSvg = (event, context, callback) => {
-  console.log(event);
+const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
-  const payload = {
-    svgs: [
-      "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Arms--1.svg",
-      "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Body--1.svg",
-      "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Legs--1.svg",
-      "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Head--1.svg"
-    ],
-    name: "test123",
-    timeout: 1000,
-    css: "https://s3.amazonaws.com/odyssy-assets/bots/css.css"
+module.exports.generateSvg = async (event, context) => {
+  const reqData = JSON.parse(event.body);
+
+  const params = {
+    TableName: process.env.DYNAMODB_TABLE,
+    Key: {
+      ghid: reqData.ghid,
+      tokenId: reqData.tokenId
+    }
   };
 
-  lambda.invoke(
-    {
-      FunctionName: "od-sls-svgflatr-dev-phantomsvgflatr",
-      Payload: JSON.stringify(payload, null, 2)
-    },
-    function(error, data) {
-      if (error) {
-        console.log(error);
-        // context.done("error", error);
-        callback(null, {
-          statusCode: error.statusCode || 501,
-          headers: { "Content-Type": "text/plain" },
-          body: "no robot."
-        });
+  const getItem = new Promise((res, rej) => {
+    dynamoDb.get(params, function(err, data) {
+      if (err) {
+        console.log("Error", err);
+        rej(err);
+      } else {
+        // console.log("Success", data);
+        res(data);
       }
+    });
+  });
 
-      console.log(data);
-      if (data.Payload) {
-        console.log(data.Payload);
-        const response = {
-          statusCode: 200,
-          body: JSON.stringify(data.Payload)
-        };
-        callback(null, response);
-      }
-    }
-  );
+  try {
+    const { Item } = await getItem;
+
+    const { svgs, colors } = generateSvgPayload(Item.dna);
+
+    const htmlGenPayload = {
+      outputName: Item.tokenId,
+      primaryColor: colors[0],
+      secondaryColor: colors[1],
+      name: Item.repo
+    };
+    const html = await lambda
+      .invoke({
+        FunctionName: "od-sls-htmlgen-dev-htmlgen",
+        Payload: JSON.stringify(htmlGenPayload, null, 2)
+      })
+      .promise();
+
+    const htmlRes = JSON.parse(html.Payload);
+
+    const svgGenPayload = {
+      svgs,
+      html: htmlRes.url,
+      name: Item.tokenId,
+      timeout: 1000
+    };
+
+    const svgData = await lambda
+      .invoke({
+        FunctionName: "od-sls-svgflatr-dev-phantomsvgflatr",
+        Payload: JSON.stringify(svgGenPayload, null, 2)
+      })
+      .promise();
+
+    return {
+      statusCode: 200,
+      // headers: {
+      //   "Content-Type": "application/json",
+      //   "Access-Control-Allow-Origin": "*"
+      // },
+      body: svgData.Payload
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      statusCode: error.statusCode || 501,
+      headers: { "Content-Type": "text/plain" },
+      body: "no robot."
+    };
+  }
 };
