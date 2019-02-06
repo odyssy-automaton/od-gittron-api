@@ -2,50 +2,72 @@
 
 const AWS = require("aws-sdk");
 
-var lambda = new AWS.Lambda({
+const lambda = new AWS.Lambda({
   region: "us-east-1"
 });
 
-module.exports.generateSvg = (event, context, callback) => {
-  console.log(event);
+const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
-  const payload = {
-    svgs: [
-      "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Arms--1.svg",
-      "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Body--1.svg",
-      "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Legs--1.svg",
-      "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Head--1.svg"
-    ],
-    name: "test123",
-    timeout: 1000,
-    css: "https://s3.amazonaws.com/odyssy-assets/bots/css.css"
+module.exports.generateSvg = async (event, context) => {
+  const reqData = JSON.parse(event.body);
+
+  const params = {
+    TableName: process.env.DYNAMODB_TABLE,
+    Key: {
+      ghid: reqData.ghid,
+      tokenId: reqData.tokenId
+    }
   };
 
-  lambda.invoke(
-    {
+  const getItem = new Promise((res, rej) => {
+    dynamoDb.get(params, function(err, data) {
+      if (err) {
+        console.log("Error", err);
+        rej(err);
+      } else {
+        // console.log("Success", data);
+        res(data);
+      }
+    });
+  });
+
+  try {
+    const { Item } = await getItem;
+
+    //TODO: now just gen these - see creature-mappings.js
+
+    const payload = {
+      svgs: [
+        "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Arms--1.svg",
+        "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Body--1.svg",
+        "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Legs--2.svg",
+        "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Head--1.svg"
+      ],
+      name: Item.tokenId,
+      timeout: 1000
+    };
+
+    const svgReq = {
       FunctionName: "od-sls-svgflatr-dev-phantomsvgflatr",
       Payload: JSON.stringify(payload, null, 2)
-    },
-    function(error, data) {
-      if (error) {
-        console.log(error);
-        // context.done("error", error);
-        callback(null, {
-          statusCode: error.statusCode || 501,
-          headers: { "Content-Type": "text/plain" },
-          body: "no robot."
-        });
-      }
+    };
 
-      console.log(data);
-      if (data.Payload) {
-        console.log(data.Payload);
-        const response = {
-          statusCode: 200,
-          body: JSON.stringify(data.Payload)
-        };
-        callback(null, response);
-      }
-    }
-  );
+    const svgData = await lambda.invoke(svgReq).promise();
+
+    return {
+      statusCode: 200,
+      // headers: {
+      //   "Content-Type": "application/json",
+      //   "Access-Control-Allow-Origin": "*"
+      // },
+      body: svgData.Payload
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      statusCode: error.statusCode || 501,
+      headers: { "Content-Type": "text/plain" },
+      body: "no robot."
+    };
+  }
 };
