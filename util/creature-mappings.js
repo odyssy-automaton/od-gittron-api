@@ -118,23 +118,38 @@ const creatureMappings = {
     rangeMapping: [
       {
         range: [0, 9],
-        color: "#f47142"
+        color: '#e2db50',
+        name: 'Golden Prime'
       },
       {
         range: [10, 19],
-        color: "#b58939"
+        color: 'e4e4f4',
+        name: 'Glacial Blue'
       },
       {
         range: [20, 29],
-        color: "#ede742"
+        color: '#f7f7f7',
+        name: 'White Lightning'
       },
       {
         range: [30, 39],
-        color: "#b1e540"
+        color: '#e6ecee',
+        name: 'Silver Lining'
       },
       {
-        range: [40, 99],
-        color: "#48dd40"
+        range: [40, 49],
+        color: '#7ee05a',
+        name: 'Mossy Green'
+      },
+      {
+        range: [50, 59],
+        color: '#ab0cbc',
+        name: 'Performant Purple'
+      },
+      {
+        range: [60, 99],
+        color: "#3a2f3a",
+        name: 'Raw Metal'
       }
     ]
   },
@@ -145,23 +160,38 @@ const creatureMappings = {
     rangeMapping: [
       {
         range: [0, 9],
-        color: "#3ff4a3"
+        color: '#e2db50',
+        name: 'Golden Prime'
       },
       {
         range: [10, 19],
-        color: "#38f7e4"
+        color: '#ab0cbc',
+        name: 'Performant Purple'
       },
       {
         range: [20, 29],
-        color: "#31b3f9"
+        color: '#b7410e',
+        name: 'Rusty'
       },
       {
         range: [30, 39],
-        color: "#2e4bf2"
+        color: '#1fa33b',
+        name: 'Foresty'
       },
       {
-        range: [40, 99],
-        color: "#6629e8"
+        range: [40, 49],
+        color: '#19d8b4',
+        name: 'Seafoam'
+      },
+      {
+        range: [50, 59],
+        color: '#0049ff',
+        name: 'Processor Blue'
+      },
+      {
+        range: [60, 99],
+        color: '#3a2f3a',
+        name: 'Raw Metal'
       }
     ]
   }
