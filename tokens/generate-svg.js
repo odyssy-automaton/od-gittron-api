@@ -37,11 +37,14 @@ module.exports.generateSvg = async (event, context) => {
 
     const { svgs, colors } = generateSvgPayload(Item.dna);
 
+
     const htmlGenPayload = {
       outputName: Item.tokenId,
-      primaryColor: colors[0],
-      secondaryColor: colors[1],
-      name: Item.repo
+      templateVars: [
+        {name: "primaryColor", value: colors[0]},
+        {name: "secondaryColor", value: colors[1]},
+        {name: "name", value: Item.repo}
+      ]
     };
     const html = await lambda
       .invoke({
