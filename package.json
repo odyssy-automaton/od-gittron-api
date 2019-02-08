@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@octokit/rest": "^16.13.4",
+    "crypto": "^1.0.1",
     "dotenv": "^6.2.0",
     "moment": "^2.24.0",
     "sentiment": "^5.0.1"

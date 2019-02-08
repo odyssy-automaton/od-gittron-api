@@ -4,7 +4,7 @@ const AWS = require("aws-sdk");
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
-module.exports.tokenUri = (event, context, callback) => {
+module.exports.getByTokenId = (event, context, callback) => {
   const params = {
     TableName: process.env.DYNAMODB_TABLE,
     IndexName: "byTokenId",
@@ -28,13 +28,13 @@ module.exports.tokenUri = (event, context, callback) => {
     if (result.Count) {
       const response = {
         statusCode: 200,
-        body: JSON.stringify(result.Items[0].tokenUriData)
+        body: JSON.stringify(result.Items[0])
       };
       callback(null, response);
     } else {
       const response = {
         statusCode: 200,
-        body: "no robot at this uri"
+        body: "no robot at this id"
       };
       callback(null, response);
     }
