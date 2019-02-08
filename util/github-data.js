@@ -6,6 +6,7 @@ const moment = require("moment");
 
 class GitHubData {
   constructor(gitHubOptions) {
+    console.log("process.env.GH_CLIENT_ID: " + process.env.GH_CLIENT_ID);
     this.octokit = new Octokit({
       clientId: process.env.GH_CLIENT_ID,
       clientSecret: process.env.GH_CLIENT_SECRET
@@ -53,7 +54,7 @@ class GitHubData {
     );
 
     if (!result.data.all) {
-      return 0
+      return 0;
     } else {
       return result.data.all.reduce((sum, currentValue) => sum + currentValue);
     }
