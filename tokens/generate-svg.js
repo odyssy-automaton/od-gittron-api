@@ -37,13 +37,12 @@ module.exports.generateSvg = async (event, context) => {
 
     const { svgs, colors } = generateSvgPayload(Item.dna);
 
-
     const htmlGenPayload = {
       outputName: Item.tokenId,
       templateVars: [
-        {name: "primaryColor", value: colors[0]},
-        {name: "secondaryColor", value: colors[1]},
-        {name: "name", value: Item.repo}
+        { name: "primaryColor", value: colors[0] },
+        { name: "secondaryColor", value: colors[1] },
+        { name: "name", value: Item.repo }
       ]
     };
     const html = await lambda
@@ -71,10 +70,10 @@ module.exports.generateSvg = async (event, context) => {
 
     return {
       statusCode: 200,
-      // headers: {
-      //   "Content-Type": "application/json",
-      //   "Access-Control-Allow-Origin": "*"
-      // },
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+      },
       body: svgData.Payload
     };
   } catch (error) {

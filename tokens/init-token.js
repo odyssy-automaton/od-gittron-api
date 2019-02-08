@@ -87,10 +87,10 @@ module.exports.initToken = async (event, context) => {
 
     return {
       statusCode: 200,
-      // headers: {
-      //   "Content-Type": "application/json",
-      //   "Access-Control-Allow-Origin": "*"
-      // },
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+      },
       body: JSON.stringify(params.Item)
     };
   } catch (error) {

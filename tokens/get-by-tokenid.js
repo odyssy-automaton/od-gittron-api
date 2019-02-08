@@ -28,6 +28,10 @@ module.exports.getByTokenId = (event, context, callback) => {
     if (result.Count) {
       const response = {
         statusCode: 200,
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        },
         body: JSON.stringify(result.Items[0])
       };
       callback(null, response);
