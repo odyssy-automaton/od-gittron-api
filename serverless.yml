@@ -22,7 +22,9 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+      Resource:
+        - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+        - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}/index/*"
 
 functions:
   initToken:
@@ -53,11 +55,18 @@ functions:
           path: tokens/repo/{ghid}
           method: get
           cors: true
-  tokenUri:
+  getByTokenId:
+    handler: tokens/get-by-tokenid.getByTokenId
+    events:
+      - http:
+          path: tokenid/{tokenid}
+          method: get
+          cors: true
+  uri:
     handler: tokens/token-uri.tokenUri
     events:
       - http:
-          path: tokens/uri/{ghid}/{tokenid}
+          path: uri/{tokenid}
           method: get
           cors: true
   generateSvg:
@@ -95,3 +104,13 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         TableName: ${self:provider.environment.DYNAMODB_TABLE}
+        GlobalSecondaryIndexes:
+          - IndexName: byTokenId
+            KeySchema:
+              - AttributeName: tokenId
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1

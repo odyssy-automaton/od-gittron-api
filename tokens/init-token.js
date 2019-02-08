@@ -11,13 +11,19 @@ module.exports.initToken = async (event, context) => {
   const timestamp = new Date().getTime();
   const reqData = JSON.parse(event.body);
 
-  // TODO: better validation maybe
-  if (typeof reqData.repo !== "string" || !reqData.tokenType) {
+  // TODO: better validation here
+  // if (typeof reqData.repo !== "string" || !reqData.tokenType) {
+  if (
+    !reqData.repo ||
+    !reqData.repoOwner ||
+    !reqData.tokenType ||
+    !reqData.address
+  ) {
     console.error("Validation Failed");
     return {
       statusCode: 400,
       headers: { "Content-Type": "text/plain" },
-      body: "Couldn't create the repo item."
+      body: "Failed validation."
     };
   }
 
@@ -33,20 +39,16 @@ module.exports.initToken = async (event, context) => {
     //TODO: Change hard coded generation
     const generation = reqData.generation || 0;
 
-    const tokenId = generateTokenID(
-      githubber.repoData,
-      reqData.tokenType,
-      generation
-    );
+    const tokenId = generateTokenID(githubber.repoData, reqData);
 
     const stats = await githubber.generateStats();
 
     const dna = generateDNA(stats, generation);
 
-    //TODO: Add from name generator
+    //TODO: Add from name generator, change description?
     const tokenUriData = {
       name: tokenId,
-      description: githubber.repoData.description,
+      description: dna,
       image: `https://s3.amazonaws.com/od-flat-svg/${tokenId}.png`,
       meta: stats
     };
@@ -62,6 +64,8 @@ module.exports.initToken = async (event, context) => {
         createdAt: timestamp,
         updatedAt: timestamp,
         tokenType: reqData.tokenType,
+        mined: false,
+        orignalOwnerAddress: reqData.address,
         generation,
         dna
       }

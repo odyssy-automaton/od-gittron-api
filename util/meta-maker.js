@@ -1,10 +1,23 @@
 "use strict";
 
+const crypto = require("crypto");
 const { creatureMappings } = require("../util/creature-mappings");
 const { mappingObjects } = require("../util/mapping-objects");
 
-const generateTokenID = (repoData, tokenType, generation) => {
-  return `${repoData.id}-${tokenType}-${generation}`;
+const generateTokenID = (repoData, reqData) => {
+  const generation = repoData.generation || 0;
+
+  const data = JSON.stringify({
+    id: repoData.id,
+    tokenType: reqData.tokenType,
+    generation,
+    originatorAddress: reqData.address
+  });
+
+  return crypto
+    .createHash("md5")
+    .update(data)
+    .digest("hex");
 };
 
 const generateDNA = (repoData, generation) => {
