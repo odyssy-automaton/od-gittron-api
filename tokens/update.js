@@ -9,7 +9,7 @@ module.exports.update = (event, context, callback) => {
   const data = JSON.parse(event.body);
 
   // TODO: better validation
-  if (typeof data.repo !== "string" || typeof data.repoOwner !== "string") {
+  if (typeof data.txHash !== "string") {
     console.error("Validation Failed");
     callback(null, {
       statusCode: 400,
@@ -19,22 +19,20 @@ module.exports.update = (event, context, callback) => {
     return;
   }
 
-  // TODO: Update for all needed fields
+  // this will hit ethers.js and check status
+
+  // TODO: Update for all needed fields?
   const params = {
     TableName: process.env.DYNAMODB_TABLE,
     Key: {
-      id: event.pathParameters.id
-    },
-    ExpressionAttributeNames: {
-      "#repo_repo": "repo"
+      ghid: event.pathParameters.ghid,
+      tokenId: event.pathParameters.tokenid
     },
     ExpressionAttributeValues: {
-      ":repo": data.repo,
-      ":repoOwner": data.repoOwner,
+      ":mined": data.mined,
       ":updatedAt": timestamp
     },
-    UpdateExpression:
-      "SET #repo_repo = :repo, repoOwner = :repoOwner, updatedAt = :updatedAt",
+    UpdateExpression: "SET mined = :mined, updatedAt = :updatedAt",
     ReturnValues: "ALL_NEW"
   };
 

@@ -76,13 +76,20 @@ functions:
           path: generatesvg
           method: post
           cors: true
-#   # update:
-#   #   handler: repos/update.update
-#   #   events:
-#   #     - http:
-#   #         path: repos/{id}
-#   #         method: put
-#   #         cors: true
+  update:
+    handler: tokens/update.update
+    events:
+      - http:
+          path: tokens/{ghid}/{tokenid}
+          method: put
+          cors: true
+  delete:
+    handler: tokens/delete.delete
+    events:
+      - http:
+          path: tokens/{ghid}/{tokenid}
+          method: delete
+          cors: true
 
 resources:
   Resources:
