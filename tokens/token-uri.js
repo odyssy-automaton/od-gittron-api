@@ -7,10 +7,9 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient();
 module.exports.tokenUri = (event, context, callback) => {
   const params = {
     TableName: process.env.DYNAMODB_TABLE,
-    IndexName: "byTokenId",
     KeyConditionExpression: "tokenId = :hkey",
     ExpressionAttributeValues: {
-      ":hkey": event.pathParameters.tokenid
+      ":hkey": event.pathParameters.tokenId
     }
   };
 

@@ -1,10 +1,12 @@
 "use strict";
 
 const AWS = require("aws-sdk");
+const EtherScanApi = require("../util/etherscan-api");
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
-module.exports.update = (event, context, callback) => {
+// module.exports.update = (event, context, callback) => {
+module.exports.update = async (event, context) => {
   const timestamp = new Date().getTime();
   const data = JSON.parse(event.body);
 
@@ -19,42 +21,66 @@ module.exports.update = (event, context, callback) => {
     return;
   }
 
-  // this will hit ethers.js and check status
+  try {
+    const api = new EtherScanApi();
+    const txStatus = await api.getTransactionReceipt(data.txHash);
 
-  // TODO: Update for all needed fields?
-  const params = {
-    TableName: process.env.DYNAMODB_TABLE,
-    Key: {
-      ghid: event.pathParameters.ghid,
-      tokenId: event.pathParameters.tokenid
-    },
-    ExpressionAttributeValues: {
-      ":mined": data.mined,
-      ":updatedAt": timestamp
-    },
-    UpdateExpression: "SET mined = :mined, updatedAt = :updatedAt",
-    ReturnValues: "ALL_NEW"
-  };
+    if (txStatus.result.status === "0x1") {
+      const updateParams = {
+        TableName: process.env.DYNAMODB_TABLE,
+        Key: {
+          ghid: event.pathParameters.ghid,
+          tokenId: event.pathParameters.tokenid
+        },
+        ExpressionAttributeValues: {
+          ":mined": data.mined,
+          ":updatedAt": timestamp
+        },
+        UpdateExpression: "SET mined = :mined, updatedAt = :updatedAt",
+        ReturnValues: "ALL_NEW"
+      };
 
-  dynamoDb.update(params, (error, result) => {
-    if (error) {
-      console.error(error);
-      callback(null, {
-        statusCode: error.statusCode || 501,
-        headers: { "Content-Type": "text/plain" },
-        body: "Couldn't fetch the repo."
+      const updateItem = new Promise((res, rej) => {
+        dynamoDb.update(updateParams, function(err, data) {
+          if (err) {
+            console.log("Error", err);
+            rej(err);
+          } else {
+            console.log("Success", data);
+            res("Hi, data update completed");
+          }
+        });
       });
-      return;
-    }
 
-    const response = {
-      statusCode: 200,
+      await updateItem;
+
+      return {
+        statusCode: 200,
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        },
+        body: JSON.stringify({ status: "Success" })
+      };
+    } else {
+      return {
+        statusCode: 200,
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        },
+        body: JSON.stringify({ status: "Failed" })
+      };
+    }
+  } catch (error) {
+    console.log(error);
+    return {
+      statusCode: 400,
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "text/plain",
         "Access-Control-Allow-Origin": "*"
       },
-      body: JSON.stringify(result.Attributes)
+      body: error
     };
-    callback(null, response);
-  });
+  }
 };

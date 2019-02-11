@@ -1,4 +1,4 @@
-service: gittron-api
+service: gittron-bot-api
 
 frameworkVersion: ">=1.1.0 <2.0.0"
 
@@ -41,13 +41,6 @@ functions:
           path: tokens
           method: get
           cors: true
-  get:
-    handler: tokens/get.get
-    events:
-      - http:
-          path: tokens/{ghid}/{tokenid}
-          method: get
-          cors: true
   getByRepo:
     handler: tokens/get-by-repo.getByRepo
     events:
@@ -59,14 +52,14 @@ functions:
     handler: tokens/get-by-tokenid.getByTokenId
     events:
       - http:
-          path: tokenid/{tokenid}
+          path: tokenid/{tokenId}
           method: get
           cors: true
   uri:
     handler: tokens/token-uri.tokenUri
     events:
       - http:
-          path: uri/{tokenid}
+          path: uri/{tokenId}
           method: get
           cors: true
   generateSvg:
@@ -80,41 +73,41 @@ functions:
     handler: tokens/update.update
     events:
       - http:
-          path: tokens/{ghid}/{tokenid}
+          path: tokens/{tokenId}
           method: put
           cors: true
   delete:
     handler: tokens/delete.delete
     events:
       - http:
-          path: tokens/{ghid}/{tokenid}
+          path: tokens/{tokenId}
           method: delete
           cors: true
 
 resources:
   Resources:
-    TokensDynamoDbTable:
+    BotDynamoDbTable:
       Type: "AWS::DynamoDB::Table"
       DeletionPolicy: Retain
       Properties:
         AttributeDefinitions:
-          - AttributeName: ghid
-            AttributeType: S
           - AttributeName: tokenId
+            AttributeType: S
+          - AttributeName: ghid
             AttributeType: S
         KeySchema:
-          - AttributeName: ghid
-            KeyType: HASH
           - AttributeName: tokenId
+            KeyType: HASH
+          - AttributeName: ghid
             KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         TableName: ${self:provider.environment.DYNAMODB_TABLE}
         GlobalSecondaryIndexes:
-          - IndexName: byTokenId
+          - IndexName: byRepo
             KeySchema:
-              - AttributeName: tokenId
+              - AttributeName: ghid
                 KeyType: HASH
             Projection:
               ProjectionType: ALL

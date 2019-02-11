@@ -15,8 +15,8 @@ module.exports.generateSvg = async (event, context) => {
   const params = {
     TableName: process.env.DYNAMODB_TABLE,
     Key: {
-      ghid: reqData.ghid,
-      tokenId: reqData.tokenId
+      tokenId: reqData.tokenId,
+      ghid: reqData.ghid
     }
   };
 
@@ -26,7 +26,7 @@ module.exports.generateSvg = async (event, context) => {
         console.log("Error", err);
         rej(err);
       } else {
-        // console.log("Success", data);
+        console.log("Success", data);
         res(data);
       }
     });

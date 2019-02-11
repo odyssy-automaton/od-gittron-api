@@ -12,7 +12,6 @@ module.exports.initToken = async (event, context) => {
   const reqData = JSON.parse(event.body);
 
   // TODO: better validation here
-  // if (typeof reqData.repo !== "string" || !reqData.tokenType) {
   if (
     !reqData.repo ||
     !reqData.repoOwner ||
@@ -97,7 +96,10 @@ module.exports.initToken = async (event, context) => {
     console.log(error);
     return {
       statusCode: 400,
-      headers: { "Content-Type": "text/plain" },
+      headers: {
+        "Content-Type": "text/plain",
+        "Access-Control-Allow-Origin": "*"
+      },
       body: error
     };
   }
