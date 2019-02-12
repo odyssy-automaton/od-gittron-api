@@ -83,6 +83,13 @@ functions:
           path: tokens/{tokenId}/{ghid}
           method: put
           cors: true
+  workerSupporter:
+    handler: tokens/worker-supporter.workerSupporter
+    events:
+      - http:
+          path: tokens/workersupporter
+          method: post
+          cors: true
 
 resources:
   Resources:

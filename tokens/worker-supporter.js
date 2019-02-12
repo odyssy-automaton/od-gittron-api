@@ -2,73 +2,54 @@
 require("dotenv").config();
 
 const AWS = require("aws-sdk");
-const GitHubData = require("../util/github-data");
-const { generateTokenID, generateDNA } = require("../util/meta-maker");
-const { tokenCount } = require("../util/dyanamo-queries");
+const { generateTokenID, alterDNA } = require("../util/meta-maker");
+const { tokenCount, getByTokenId } = require("../util/dyanamo-queries");
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
-module.exports.initToken = async (event, context) => {
+module.exports.workerSupporter = async (event, context) => {
   const timestamp = new Date().getTime();
   const reqData = JSON.parse(event.body);
 
-  // TODO: better validation here
-  if (
-    !reqData.repo ||
-    !reqData.repoOwner ||
-    !reqData.tokenType ||
-    !reqData.address
-  ) {
-    console.error("Validation Failed");
-    return {
-      statusCode: 400,
-      headers: {
-        "Content-Type": "text/plain",
-        "Access-Control-Allow-Origin": "*"
-      },
-      body: "Failed validation."
-    };
-  }
-
-  const githubber = new GitHubData({
-    repo: reqData.repo,
-    owner: reqData.repoOwner
-  });
+  //gen new dna with rando colors
+  //
 
   try {
-    const { data } = await githubber.getRepo();
-    githubber.repoData = data;
-
-    const generation = reqData.generation || 0;
     const count = await tokenCount();
-    const tokenId = generateTokenID(githubber.repoData.id, reqData, count);
-    const stats = await githubber.generateStats();
-    const dna = generateDNA(stats, generation);
+    const getRes = await getByTokenId(reqData.masterTokenId);
+    const masterToken = getRes.Items[0];
 
-    //TODO: Add from name generator, change description?
+    const tokenId = generateTokenID(
+      masterToken.ghid,
+      reqData,
+      count.Count,
+      masterToken.generation
+    );
+
+    const dna = alterDNA(masterToken.dna);
+
     const tokenUriData = {
       name: tokenId,
       description: dna,
       image: `https://s3.amazonaws.com/od-flat-svg/${tokenId}.png`,
-      meta: stats
+      meta: masterToken.tokenUriData.meta
     };
 
     const params = {
       TableName: process.env.DYNAMODB_TABLE,
       Item: {
-        ghid: githubber.repoData.id.toString(),
+        ghid: masterToken.ghid.toString(),
         tokenId: tokenId.toString(),
-        repo: reqData.repo,
-        repoOwner: reqData.repoOwner,
-        tokenUriData: tokenUriData,
+        repo: masterToken.repo,
+        repoOwner: masterToken.repoOwner,
+        tokenUriData,
         createdAt: timestamp,
         updatedAt: timestamp,
         tokenType: reqData.tokenType,
         mined: false,
-        verified: false,
         orignalOwnerAddress: reqData.address,
         txHash: null,
-        generation,
+        generation: masterToken.generation,
         dna
       }
     };
