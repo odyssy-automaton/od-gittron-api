@@ -12,7 +12,6 @@ module.exports.initToken = async (event, context) => {
   const reqData = JSON.parse(event.body);
 
   // TODO: better validation here
-  // if (typeof reqData.repo !== "string" || !reqData.tokenType) {
   if (
     !reqData.repo ||
     !reqData.repoOwner ||
@@ -22,7 +21,10 @@ module.exports.initToken = async (event, context) => {
     console.error("Validation Failed");
     return {
       statusCode: 400,
-      headers: { "Content-Type": "text/plain" },
+      headers: {
+        "Content-Type": "text/plain",
+        "Access-Control-Allow-Origin": "*"
+      },
       body: "Failed validation."
     };
   }
@@ -36,13 +38,9 @@ module.exports.initToken = async (event, context) => {
     const { data } = await githubber.getRepo();
     githubber.repoData = data;
 
-    //TODO: Change hard coded generation
     const generation = reqData.generation || 0;
-
     const tokenId = generateTokenID(githubber.repoData, reqData);
-
     const stats = await githubber.generateStats();
-
     const dna = generateDNA(stats, generation);
 
     //TODO: Add from name generator, change description?
@@ -66,6 +64,7 @@ module.exports.initToken = async (event, context) => {
         tokenType: reqData.tokenType,
         mined: false,
         orignalOwnerAddress: reqData.address,
+        txHash: null,
         generation,
         dna
       }
@@ -97,7 +96,10 @@ module.exports.initToken = async (event, context) => {
     console.log(error);
     return {
       statusCode: 400,
-      headers: { "Content-Type": "text/plain" },
+      headers: {
+        "Content-Type": "text/plain",
+        "Access-Control-Allow-Origin": "*"
+      },
       body: error
     };
   }

@@ -9,7 +9,7 @@ module.exports.update = (event, context, callback) => {
   const data = JSON.parse(event.body);
 
   // TODO: better validation
-  if (typeof data.repo !== "string" || typeof data.repoOwner !== "string") {
+  if (typeof data.txHash !== "string") {
     console.error("Validation Failed");
     callback(null, {
       statusCode: 400,
@@ -19,22 +19,17 @@ module.exports.update = (event, context, callback) => {
     return;
   }
 
-  // TODO: Update for all needed fields
   const params = {
     TableName: process.env.DYNAMODB_TABLE,
     Key: {
-      id: event.pathParameters.id
-    },
-    ExpressionAttributeNames: {
-      "#repo_repo": "repo"
+      tokenId: event.pathParameters.tokenId,
+      ghid: event.pathParameters.ghid
     },
     ExpressionAttributeValues: {
-      ":repo": data.repo,
-      ":repoOwner": data.repoOwner,
+      ":txHash": data.txHash,
       ":updatedAt": timestamp
     },
-    UpdateExpression:
-      "SET #repo_repo = :repo, repoOwner = :repoOwner, updatedAt = :updatedAt",
+    UpdateExpression: "SET txHash = :txHash, updatedAt = :updatedAt",
     ReturnValues: "ALL_NEW"
   };
 

@@ -9,14 +9,14 @@ const lambda = new AWS.Lambda({
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
-module.exports.generateSvg = async (event, context) => {
+module.exports.generatePng = async (event, context) => {
   const reqData = JSON.parse(event.body);
 
   const params = {
     TableName: process.env.DYNAMODB_TABLE,
     Key: {
-      ghid: reqData.ghid,
-      tokenId: reqData.tokenId
+      tokenId: reqData.tokenId,
+      ghid: reqData.ghid
     }
   };
 
@@ -26,7 +26,7 @@ module.exports.generateSvg = async (event, context) => {
         console.log("Error", err);
         rej(err);
       } else {
-        // console.log("Success", data);
+        console.log("Success", data);
         res(data);
       }
     });
@@ -68,6 +68,8 @@ module.exports.generateSvg = async (event, context) => {
       })
       .promise();
 
+    console.log(svgData);
+
     return {
       statusCode: 200,
       headers: {
@@ -80,7 +82,10 @@ module.exports.generateSvg = async (event, context) => {
     console.log(error);
     return {
       statusCode: error.statusCode || 501,
-      headers: { "Content-Type": "text/plain" },
+      headers: {
+        "Content-Type": "text/plain",
+        "Access-Control-Allow-Origin": "*"
+      },
       body: "no robot."
     };
   }

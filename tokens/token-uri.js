@@ -7,10 +7,9 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient();
 module.exports.tokenUri = (event, context, callback) => {
   const params = {
     TableName: process.env.DYNAMODB_TABLE,
-    IndexName: "byTokenId",
     KeyConditionExpression: "tokenId = :hkey",
     ExpressionAttributeValues: {
-      ":hkey": event.pathParameters.tokenid
+      ":hkey": event.pathParameters.tokenId
     }
   };
 
@@ -26,13 +25,20 @@ module.exports.tokenUri = (event, context, callback) => {
     }
 
     if (result.Count) {
+      let uriData = result.Items[0].tokenUriData;
+
+      if (!result.Items[0].mined) {
+        uriData.image =
+          "https://s3.amazonaws.com/odyssy-assets/Gittron__BotCube.png";
+      }
+
       const response = {
         statusCode: 200,
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*"
         },
-        body: JSON.stringify(result.Items[0].tokenUriData)
+        body: JSON.stringify(uriData)
       };
       callback(null, response);
     } else {
