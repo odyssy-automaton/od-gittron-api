@@ -11,8 +11,7 @@ module.exports.workerSupporter = async (event, context) => {
   const timestamp = new Date().getTime();
   const reqData = JSON.parse(event.body);
 
-  //gen new dna with rando colors
-  //
+  //TODO: Validation
 
   try {
     const count = await tokenCount();
