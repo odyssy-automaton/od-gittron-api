@@ -5,8 +5,6 @@ const AWS = require("aws-sdk");
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 module.exports.getByTokenId = (event, context, callback) => {
-  console.log(event.pathParameters.tokenId);
-  console.log(event.pathParameters.tokenid);
   const params = {
     TableName: process.env.DYNAMODB_TABLE,
     KeyConditionExpression: "tokenId = :hkey",
@@ -20,8 +18,11 @@ module.exports.getByTokenId = (event, context, callback) => {
       console.error(error);
       callback(null, {
         statusCode: error.statusCode || 501,
-        headers: { "Content-Type": "text/plain" },
-        body: "Couldn't fetch the repo."
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        },
+        body: "Couldn't fetch the robot."
       });
       return;
     }
@@ -39,6 +40,10 @@ module.exports.getByTokenId = (event, context, callback) => {
     } else {
       const response = {
         statusCode: 200,
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        },
         body: "no robot at this id"
       };
       callback(null, response);
