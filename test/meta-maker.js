@@ -1,6 +1,7 @@
 const {
   generateSvgPayload,
   generateDNA,
+  alterDNA,
   fromDnaString,
   generateTokenID
 } = require("../util/meta-maker");
@@ -51,6 +52,8 @@ const dnaString = "00-32-06-36-95-50-24-00";
 // const res = generateDNA(repoData.tokenUriData.meta, 0);
 // const res = fromDnaString("00-01-57-83-52-34-62-00");
 
-const res = generateTokenID(repoData, reqData);
+// const res = generateTokenID(repoData, reqData);
+
+const res = alterDNA(dnaString);
 
 console.log(res);

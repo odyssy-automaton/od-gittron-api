@@ -4,13 +4,14 @@ const crypto = require("crypto");
 const { creatureMappings } = require("../util/creature-mappings");
 const { mappingObjects } = require("../util/mapping-objects");
 
-const generateTokenID = (repoData, reqData) => {
-  const generation = repoData.generation || 0;
+const generateTokenID = (ghid, reqData, count, gen) => {
+  const generation = gen || 0;
 
   const data = JSON.stringify({
-    id: repoData.id,
+    id: ghid,
     tokenType: reqData.tokenType,
     generation,
+    count,
     originatorAddress: reqData.address
   });
 
@@ -41,6 +42,14 @@ const generateDNA = (repoData, generation) => {
   dna[0] = generation;
   //adding 00 for 'HH - Type' on the end
   dna.push(0);
+
+  return toDnaString(dna);
+};
+
+const alterDNA = dnaString => {
+  let dna = dnaString.split("-");
+  dna[5] = getRandomInt(99);
+  dna[6] = getRandomInt(99);
 
   return toDnaString(dna);
 };
@@ -92,6 +101,7 @@ Number.prototype.between = function(a, b) {
 module.exports = {
   generateTokenID,
   generateDNA,
+  alterDNA,
   generateSvgPayload,
   toDnaString,
   fromDnaString
