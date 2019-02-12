@@ -9,7 +9,6 @@ module.exports.getByTokenId = (event, context, callback) => {
   console.log(event.pathParameters.tokenid);
   const params = {
     TableName: process.env.DYNAMODB_TABLE,
-    // IndexName: "byTokenId",
     KeyConditionExpression: "tokenId = :hkey",
     ExpressionAttributeValues: {
       ":hkey": event.pathParameters.tokenId
@@ -26,8 +25,6 @@ module.exports.getByTokenId = (event, context, callback) => {
       });
       return;
     }
-
-    console.log(result);
 
     if (result.Count) {
       const response = {

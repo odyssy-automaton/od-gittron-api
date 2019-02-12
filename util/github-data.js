@@ -7,8 +7,10 @@ const moment = require("moment");
 class GitHubData {
   constructor(gitHubOptions) {
     this.octokit = new Octokit({
-      clientId: process.env.GH_CLIENT_ID,
-      clientSecret: process.env.GH_CLIENT_SECRET
+      auth: {
+        clientId: process.env.GH_CLIENT_ID,
+        clientSecret: process.env.GH_CLIENT_SECRET
+      }
     });
     this.gitHubOptions = gitHubOptions;
     this.repoData = {};
@@ -43,8 +45,11 @@ class GitHubData {
       data.created_at,
       data.updated_at
     );
-    const diff = moment(data.updated_at).diff(moment(data.created_at), period);
-    return commitCount / diff;
+    const speed =
+      commitCount /
+      moment(data.updated_at).diff(moment(data.created_at), period);
+
+    return speed === Infinity ? 99 : speed;
   }
 
   async getCommitsCount() {

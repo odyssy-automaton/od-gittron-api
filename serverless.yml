@@ -62,26 +62,26 @@ functions:
           path: uri/{tokenId}
           method: get
           cors: true
-  generateSvg:
-    handler: tokens/generate-svg.generateSvg
+  generatePng:
+    handler: tokens/generate-png.generatePng
     events:
       - http:
-          path: generatesvg
+          path: generatepng
           method: post
+          cors: true
+  checkTransactionStatus:
+    handler: tokens/check-transaction-status.checkTransactionStatus
+    events:
+      - http:
+          path: tokenstatus
+          method: put
           cors: true
   update:
     handler: tokens/update.update
     events:
       - http:
-          path: tokens/{tokenId}
+          path: tokens/{tokenId}/{ghid}
           method: put
-          cors: true
-  delete:
-    handler: tokens/delete.delete
-    events:
-      - http:
-          path: tokens/{tokenId}
-          method: delete
           cors: true
 
 resources:

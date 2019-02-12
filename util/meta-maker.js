@@ -14,10 +14,12 @@ const generateTokenID = (repoData, reqData) => {
     originatorAddress: reqData.address
   });
 
-  return crypto
+  const hex = crypto
     .createHash("md5")
     .update(data)
     .digest("hex");
+
+  return "0x" + hex;
 };
 
 const generateDNA = (repoData, generation) => {
