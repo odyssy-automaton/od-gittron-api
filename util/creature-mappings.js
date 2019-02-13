@@ -196,7 +196,7 @@ const creatureMappings = {
       },
       {
         range: [60, 99],
-        color: "#3a2f3a",
+        color: "#c4bbc4",
         name: 'Raw Metal'
       }
     ]
@@ -238,7 +238,7 @@ const creatureMappings = {
       },
       {
         range: [60, 99],
-        color: '#3a2f3a',
+        color: '#8e8e8e',
         name: 'Raw Metal'
       }
     ]
