@@ -44,7 +44,7 @@ class GitHubData {
 
   async getVerificationAddress() {
     const { data } = await this.getContents();
-    const file = data.find(file => file.name === ".superprism");
+    const file = data.find(file => file.name === ".gittron");
 
     if (file) {
       const blob = await this.getBlob(file.sha);
