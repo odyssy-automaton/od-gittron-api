@@ -22,8 +22,12 @@ const creatureMappings = {
         svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Body--4.svg"
       },
       {
-        range: [4, 99],
+        range: [4, 4],
         svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Body--5.svg"
+      },
+      {
+        range: [5, 99],
+        svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Body--6.svg"
       }
     ]
   },
@@ -50,8 +54,16 @@ const creatureMappings = {
         svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Legs--4.svg"
       },
       {
-        range: [40, 99],
+        range: [40, 49],
         svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Legs--5.svg"
+      },
+      {
+        range: [50, 59],
+        svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Legs--6.svg"
+      },
+      {
+        range: [60, 99],
+        svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Legs--7.svg"
       }
     ]
   },
@@ -78,8 +90,24 @@ const creatureMappings = {
         svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Arms--4.svg"
       },
       {
-        range: [40, 99],
+        range: [40, 49],
         svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Arms--5.svg"
+      },
+      {
+        range: [50, 59],
+        svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Arms--6.svg"
+      },
+      {
+        range: [60, 69],
+        svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Arms--7.svg"
+      },
+      {
+        range: [70, 79],
+        svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Arms--8.svg"
+      },
+      {
+        range: [80, 99],
+        svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Arms--9.svg"
       }
     ]
   },
@@ -108,6 +136,26 @@ const creatureMappings = {
       {
         range: [40, 99],
         svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Head--5.svg"
+      },
+      {
+        range: [50, 59],
+        svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Head--6.svg"
+      },
+      {
+        range: [60, 69],
+        svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Head--7.svg"
+      },
+      {
+        range: [70, 79],
+        svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Head--8.svg"
+      },
+      {
+        range: [80, 89],
+        svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Head--9.svg"
+      },
+      {
+        range: [99, 99],
+        svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Head--Bufficorn.svg"
       }
     ]
   },
@@ -123,7 +171,7 @@ const creatureMappings = {
       },
       {
         range: [10, 19],
-        color: 'e4e4f4',
+        color: '#e4e4f4',
         name: 'Glacial Blue'
       },
       {
@@ -148,7 +196,7 @@ const creatureMappings = {
       },
       {
         range: [60, 99],
-        color: "#3a2f3a",
+        color: "#c4bbc4",
         name: 'Raw Metal'
       }
     ]
@@ -190,7 +238,7 @@ const creatureMappings = {
       },
       {
         range: [60, 99],
-        color: '#3a2f3a',
+        color: '#8e8e8e',
         name: 'Raw Metal'
       }
     ]
