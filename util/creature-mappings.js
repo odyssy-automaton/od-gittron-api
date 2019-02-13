@@ -171,7 +171,7 @@ const creatureMappings = {
       },
       {
         range: [10, 19],
-        color: 'e4e4f4',
+        color: '#e4e4f4',
         name: 'Glacial Blue'
       },
       {
