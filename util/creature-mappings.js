@@ -150,12 +150,13 @@ const creatureMappings = {
         svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Head--8.svg"
       },
       {
-        range: [80, 89],
+        range: [80, 98],
         svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Head--9.svg"
       },
       {
         range: [99, 99],
-        svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Head--Bufficorn.svg"
+        svg:
+          "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Head--Bufficorn.svg"
       }
     ]
   },
@@ -166,38 +167,38 @@ const creatureMappings = {
     rangeMapping: [
       {
         range: [0, 9],
-        color: '#e2db50',
-        name: 'Golden Prime'
+        color: "#e2db50",
+        name: "Golden Prime"
       },
       {
         range: [10, 19],
-        color: '#e4e4f4',
-        name: 'Glacial Blue'
+        color: "#e4e4f4",
+        name: "Glacial Blue"
       },
       {
         range: [20, 29],
-        color: '#f7f7f7',
-        name: 'White Lightning'
+        color: "#f7f7f7",
+        name: "White Lightning"
       },
       {
         range: [30, 39],
-        color: '#e6ecee',
-        name: 'Silver Lining'
+        color: "#e6ecee",
+        name: "Silver Lining"
       },
       {
         range: [40, 49],
-        color: '#7ee05a',
-        name: 'Mossy Green'
+        color: "#7ee05a",
+        name: "Mossy Green"
       },
       {
         range: [50, 59],
-        color: '#ab0cbc',
-        name: 'Performant Purple'
+        color: "#ab0cbc",
+        name: "Performant Purple"
       },
       {
         range: [60, 99],
         color: "#c4bbc4",
-        name: 'Raw Metal'
+        name: "Raw Metal"
       }
     ]
   },
@@ -208,38 +209,38 @@ const creatureMappings = {
     rangeMapping: [
       {
         range: [0, 9],
-        color: '#e2db50',
-        name: 'Golden Prime'
+        color: "#e2db50",
+        name: "Golden Prime"
       },
       {
         range: [10, 19],
-        color: '#ab0cbc',
-        name: 'Performant Purple'
+        color: "#ab0cbc",
+        name: "Performant Purple"
       },
       {
         range: [20, 29],
-        color: '#b7410e',
-        name: 'Rusty'
+        color: "#b7410e",
+        name: "Rusty"
       },
       {
         range: [30, 39],
-        color: '#1fa33b',
-        name: 'Foresty'
+        color: "#1fa33b",
+        name: "Foresty"
       },
       {
         range: [40, 49],
-        color: '#19d8b4',
-        name: 'Seafoam'
+        color: "#19d8b4",
+        name: "Seafoam"
       },
       {
         range: [50, 59],
-        color: '#0049ff',
-        name: 'Processor Blue'
+        color: "#0049ff",
+        name: "Processor Blue"
       },
       {
         range: [60, 99],
-        color: '#8e8e8e',
-        name: 'Raw Metal'
+        color: "#8e8e8e",
+        name: "Raw Metal"
       }
     ]
   }
