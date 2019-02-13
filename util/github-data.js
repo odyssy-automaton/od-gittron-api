@@ -25,6 +25,38 @@ class GitHubData {
     return this.octokit.request("GET /repositories/:id", { id });
   }
 
+  getContents() {
+    const query = {
+      ...this.gitHubOptions,
+      path: "/"
+    };
+    return this.octokit.repos.getContents(query);
+  }
+
+  getBlob(sha) {
+    const query = {
+      ...this.gitHubOptions,
+      file_sha: sha
+    };
+
+    return this.octokit.git.getBlob(query);
+  }
+
+  async getVerificationAddress() {
+    const { data } = await this.getContents();
+    const file = data.find(file => file.name === ".superprism");
+
+    if (file) {
+      const blob = await this.getBlob(file.sha);
+      const buff = Buffer.from(blob.data.content, "base64");
+      const contents = buff.toString("utf-8");
+
+      return contents.replace(/ /g, "");
+    } else {
+      return false;
+    }
+  }
+
   async generateStats() {
     const stars = this.repoData.stargazers_count + this.repoData.watchers_count;
     const commitSpeed = await this.commitsPer(this.repoData, "days");

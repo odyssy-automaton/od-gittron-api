@@ -90,6 +90,13 @@ functions:
           path: tokens/workersupporter
           method: post
           cors: true
+  verifyRepo:
+    handler: tokens/verify-repo.verifyRepo
+    events:
+      - http:
+          path: verifyrepo/{tokenId}
+          method: put
+          cors: true
 
 resources:
   Resources:
