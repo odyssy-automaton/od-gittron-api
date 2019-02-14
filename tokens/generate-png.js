@@ -1,7 +1,7 @@
 "use strict";
 
 const AWS = require("aws-sdk");
-const { generateSvgPayload } = require("../util/meta-maker");
+const { generateSvgPayload, addMutationSvgs } = require("../util/meta-maker");
 
 const lambda = new AWS.Lambda({
   region: "us-east-1"
@@ -54,8 +54,10 @@ module.exports.generatePng = async (event, context) => {
 
     const htmlRes = JSON.parse(html.Payload);
 
+    const svgWithMutations = addMutationSvgs(Item.mutationDna, svgs);
+
     const svgGenPayload = {
-      svgs,
+      svgs: svgWithMutations,
       html: htmlRes.url,
       name: Item.tokenId,
       timeout: 1000
@@ -67,8 +69,6 @@ module.exports.generatePng = async (event, context) => {
         Payload: JSON.stringify(svgGenPayload, null, 2)
       })
       .promise();
-
-    console.log(svgData);
 
     return {
       statusCode: 200,
