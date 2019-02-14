@@ -6,6 +6,11 @@ package:
   exclude:
     - test/**
 
+# custom:
+#   webHost:
+#     dev: localhost
+#     prod: primebot.odyssy.io
+
 provider:
   name: aws
   runtime: nodejs8.10

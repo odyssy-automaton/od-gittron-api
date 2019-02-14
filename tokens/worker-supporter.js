@@ -50,7 +50,7 @@ module.exports.workerSupporter = async (event, context) => {
         txHash: null,
         generation: masterToken.generation,
         dna,
-        mutationDna: mutationDna
+        mutationDna: masterToken.mutationDna
       }
     };
 
