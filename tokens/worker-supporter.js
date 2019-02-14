@@ -49,7 +49,8 @@ module.exports.workerSupporter = async (event, context) => {
         orignalOwnerAddress: reqData.address,
         txHash: null,
         generation: masterToken.generation,
-        dna
+        dna,
+        mutationDna: mutationDna
       }
     };
 

@@ -3,7 +3,11 @@ require("dotenv").config();
 
 const AWS = require("aws-sdk");
 const GitHubData = require("../util/github-data");
-const { generateTokenID, generateDNA } = require("../util/meta-maker");
+const {
+  generateTokenID,
+  generateDNA,
+  generateMutationDNA
+} = require("../util/meta-maker");
 const { tokenCount } = require("../util/dyanamo-queries");
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
@@ -44,6 +48,7 @@ module.exports.initToken = async (event, context) => {
     const tokenId = generateTokenID(githubber.repoData.id, reqData, count);
     const stats = await githubber.generateStats();
     const dna = generateDNA(stats, generation);
+    const mutationDna = generateMutationDNA(generation);
 
     //TODO: Add from name generator, change description?
     const tokenUriData = {
@@ -69,7 +74,8 @@ module.exports.initToken = async (event, context) => {
         orignalOwnerAddress: reqData.address,
         txHash: null,
         generation,
-        dna
+        dna,
+        mutationDna
       }
     };
 

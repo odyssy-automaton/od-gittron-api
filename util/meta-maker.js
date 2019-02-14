@@ -2,6 +2,7 @@
 
 const crypto = require("crypto");
 const { creatureMappings } = require("../util/creature-mappings");
+const { mutationMappings } = require("../util/mutation-mappings");
 const { mappingObjects } = require("../util/mapping-objects");
 
 const generateTokenID = (ghid, reqData, count, gen) => {
@@ -54,6 +55,26 @@ const alterDNA = dnaString => {
   return toDnaString(dna);
 };
 
+const generateMutationDNA = (generation, previousMutationDNA) => {
+  const mutations = Object.entries(mutationMappings);
+
+  const mutationDNA = +generation
+    ? fromDnaString(previousMutationDNA)
+    : new Array(mutations.length).fill(0);
+
+  new Array(+generation + 1).fill(0).forEach(rolls => {
+    let randomIndex = getRandomInt(mutations.length);
+
+    if (mutationDNA[randomIndex]) {
+      return;
+    }
+
+    mutationDNA[randomIndex] = getRandomInt(99);
+  });
+
+  return toDnaString(mutationDNA);
+};
+
 const generateSvgPayload = dnaString => {
   const dna = fromDnaString(dnaString);
 
@@ -73,8 +94,33 @@ const generateSvgPayload = dnaString => {
   };
 };
 
+const addMutationSvgs = (dnaString, svgs) => {
+  const dna = fromDnaString(dnaString);
+  const mutations = Object.entries(mutationMappings);
+
+  mutations.find(mutation => {
+    const res = mapToMutationSvg(dna[mutation[1].dnaIndex], mutation[0]);
+
+    if (+mutation[1].layerIndex && res.svg !== "") {
+      svgs.unshift(res.svg);
+    }
+
+    if (!+mutation[1].layerIndex && res.svg !== "") {
+      svgs.push(res.svg);
+    }
+  });
+
+  return svgs;
+};
+
 const mapToSvg = (value, section) => {
   return creatureMappings[section].rangeMapping.find(r => {
+    return value.between(r.range[0], r.range[1]);
+  });
+};
+
+const mapToMutationSvg = (value, section) => {
+  return mutationMappings[section].rangeMapping.find(r => {
     return value.between(r.range[0], r.range[1]);
   });
 };
@@ -102,7 +148,9 @@ module.exports = {
   generateTokenID,
   generateDNA,
   alterDNA,
+  generateMutationDNA,
   generateSvgPayload,
+  addMutationSvgs,
   toDnaString,
   fromDnaString
 };
