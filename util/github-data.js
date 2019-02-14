@@ -62,10 +62,13 @@ class GitHubData {
     const commitSpeed = await this.commitsPer(this.repoData, "days");
 
     const sentiment = await this.getSentiment();
+    const language = this.repoData.language
+      ? this.repoData.language.toLowerCase()
+      : "default";
 
     return {
       ghid: this.repoData.id,
-      language: this.repoData.language.toLowerCase(),
+      language,
       stars,
       commitSpeed,
       sentiment
