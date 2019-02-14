@@ -44,7 +44,30 @@ const getByTokenId = function(tokenId) {
   });
 };
 
+const deleteToken = function(tokenId, ghid) {
+  const deleteParams = {
+    TableName: process.env.DYNAMODB_TABLE,
+    Key: {
+      tokenId: tokenId,
+      ghid: ghid
+    }
+  };
+
+  return new Promise((res, rej) => {
+    dynamoDb.delete(deleteParams, function(err, data) {
+      if (err) {
+        console.log("Error", err);
+        rej(err);
+      } else {
+        console.log("Success", data);
+        res(data);
+      }
+    });
+  });
+};
+
 module.exports = {
   tokenCount,
-  getByTokenId
+  getByTokenId,
+  deleteToken
 };

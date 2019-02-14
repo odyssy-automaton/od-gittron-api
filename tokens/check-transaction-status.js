@@ -2,6 +2,7 @@
 
 const AWS = require("aws-sdk");
 const EtherScanApi = require("../util/etherscan-api");
+const { deleteToken } = require("../util/dyanamo-queries");
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
@@ -27,6 +28,21 @@ module.exports.checkTransactionStatus = async (event, context) => {
   }
 
   try {
+    if (data.txHash === "rejected") {
+      await deleteToken(data.tokenId, data.ghid);
+
+      return {
+        statusCode: 200,
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        },
+        body: JSON.stringify({
+          message: "Deleted item after error or rejection"
+        })
+      };
+    }
+
     const api = new EtherScanApi();
     const txStatus = await api.getTransactionReceipt(data.txHash);
 
