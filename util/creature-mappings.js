@@ -166,37 +166,77 @@ const creatureMappings = {
     randomAssignment: true,
     rangeMapping: [
       {
-        range: [0, 9],
-        color: "#e2db50",
-        name: "Golden Prime"
+        range: [0, 6],
+        color: "#6F372D",
+        name: "Mocha"
       },
       {
-        range: [10, 19],
+        range: [7, 13],
         color: "#e4e4f4",
         name: "Glacial Blue"
       },
       {
-        range: [20, 29],
+        range: [14, 20],
         color: "#f7f7f7",
         name: "White Lightning"
       },
       {
-        range: [30, 39],
+        range: [21, 27],
         color: "#e6ecee",
         name: "Silver Lining"
       },
       {
-        range: [40, 49],
+        range: [28, 34],
         color: "#7ee05a",
         name: "Mossy Green"
       },
       {
-        range: [50, 59],
+        range: [35, 41],
         color: "#ab0cbc",
         name: "Performant Purple"
       },
       {
-        range: [60, 99],
+        range: [42, 48],
+        color: "#e838a1",
+        name: "Hott Pink"
+      },
+      {
+        range: [49, 55],
+        color: "#39e562",
+        name: "Neon Green"
+      },
+      {
+        range: [56, 62],
+        color: "#e04c4c",
+        name: "Rusty Red"
+      },
+      {
+        range: [63, 69],
+        color: "#e29b1e",
+        name: "Oo-orange"
+      },    
+      {
+        range: [70, 76],
+        color: "#fcd703",
+        name: "Sunshine"
+      },
+      {
+        range: [77, 79],
+        color: "#e2db50",
+        name: "Golden Prime"
+      },
+      {
+        range: [80, 82],
+        color: "#3a3338",
+        name: "Stealthy"
+      },
+      {
+        range: [83,84],
+        color: "#5e3f99",
+        name: "Odyssy Primary"
+      },
+      {
+        range: [85,99],
         color: "#c4bbc4",
         name: "Raw Metal"
       }
@@ -209,8 +249,8 @@ const creatureMappings = {
     rangeMapping: [
       {
         range: [0, 9],
-        color: "#e2db50",
-        name: "Golden Prime"
+        color: "#0049ff",
+        name: "Processor Blue"
       },
       {
         range: [10, 19],
@@ -220,7 +260,7 @@ const creatureMappings = {
       {
         range: [20, 29],
         color: "#b7410e",
-        name: "Rusty"
+        name: "Rusty Red"
       },
       {
         range: [30, 39],
@@ -234,11 +274,27 @@ const creatureMappings = {
       },
       {
         range: [50, 59],
-        color: "#0049ff",
-        name: "Processor Blue"
+        color: "#1ad6cd",
+        name: "Teal"
       },
       {
-        range: [60, 99],
+        range: [60, 64],
+        range: [0, 5],
+        color: "#e2db50",
+        name: "Golden Prime"
+      },
+      {
+        range: [65, 69],
+        color: "#3a3338",
+        name: "Stealthy"
+      },
+      {
+        range: [70, 74],
+        color: "#eddc02",
+        name: "Odyssy Secondary"
+      },
+      {
+        range: [75, 99],
         color: "#8e8e8e",
         name: "Raw Metal"
       }
