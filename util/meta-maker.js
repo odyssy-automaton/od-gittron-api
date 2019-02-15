@@ -220,53 +220,7 @@ module.exports = {
   generateSvgPayload,
   addMutationSvgs,
   getMetaAttributes,
+  getColors,
   toDnaString,
   fromDnaString
 };
-
-// {
-//   "description": "The year is 3369 and, throughout the universe, all biological life has been decimated. It's up to the Prime Bots to buidl their own future. They'll need help from the Worker and Support Bots in order to survive.",
-//   "external_url": "https://openseacreatures.io/botpage",
-//   "image": "https://storage.googleapis.com/opensea-prod.appspot.com/puffs/3.png",
-//   "name": "Mech <repo> master/support/worker",
-//   "attributes": "attributes": [
-//     {
-//       "trait_type": "primary_color",
-//       "value": "banana yellow"
-//     },
-//     {
-//       "trait_type": "secondary_color",
-//       "value": "lazer red"
-//     },
-//     {
-//       "trait_type": "type",
-//       "value": "ethdenverbot"
-//     },
-// {
-//       "trait_type": "language",
-//       "value": "python/solidity/special"
-//     },
-//     {
-//       "trait_type": "armor",
-//       "value": "poop"
-//     },
-//     {
-//       "trait_type": "planet",
-//       "value": "poopworld"
-//     },
-//     {
-//       "trait_type": "energy",
-//       "value": "beans"
-//     },
-//     {
-//       "trait_type": "back",
-//       "value": "beans"
-//     },
-//     {
-//       "display_type": "number",
-//       "trait_type": "generation",
-//       "value": 2
-//     },
-
-//   ]
-// }
