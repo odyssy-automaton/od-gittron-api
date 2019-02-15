@@ -113,6 +113,39 @@ const addMutationSvgs = (dnaString, svgs) => {
   return svgs;
 };
 
+const getMetaAttributes = (dnaString, mutationDna, language, generation) => {
+  //TODO: Might break when we add new rares
+
+  const { primaryColor, secondaryColor } = getColors(dnaString);
+  const type = getType(dnaString);
+  const [armor, planet, energy, back] = getMutationAttributes(mutationDna);
+
+  const traits = {
+    primaryColor,
+    secondaryColor,
+    type,
+    language,
+    armor,
+    planet,
+    energy,
+    back,
+    generation
+  };
+
+  return Object.entries(traits).map(trait => {
+    let res = {
+      trait_type: trait[0],
+      value: trait[1]
+    };
+
+    if (trait[0] === "generation") {
+      res.display_type = "number";
+    }
+
+    return res;
+  });
+};
+
 const getColors = dnaString => {
   const dna = fromDnaString(dnaString);
 
@@ -127,6 +160,21 @@ const getColors = dnaString => {
   }).name;
 
   return { primaryColor, secondaryColor };
+};
+
+const getType = dnaString => {
+  const dna = dnaString.split("-");
+  return mappingObjects.type[dna[dna.length - 1]];
+};
+
+const getMutationAttributes = mutationDna => {
+  const dna = fromDnaString(mutationDna);
+
+  return Object.entries(mutationMappings).map(mutation => {
+    const res = mapToMutationSvg(dna[mutation[1].dnaIndex], mutation[0]);
+
+    return res.name;
+  });
 };
 
 const mapToSvg = (value, section) => {
@@ -167,7 +215,54 @@ module.exports = {
   generateMutationDNA,
   generateSvgPayload,
   addMutationSvgs,
-  getColors,
+  getMetaAttributes,
   toDnaString,
   fromDnaString
 };
+
+// {
+//   "description": "The year is 3369 and, throughout the universe, all biological life has been decimated. It's up to the Prime Bots to buidl their own future. They'll need help from the Worker and Support Bots in order to survive.",
+//   "external_url": "https://openseacreatures.io/botpage",
+//   "image": "https://storage.googleapis.com/opensea-prod.appspot.com/puffs/3.png",
+//   "name": "Mech <repo> master/support/worker",
+//   "attributes": "attributes": [
+//     {
+//       "trait_type": "primary_color",
+//       "value": "banana yellow"
+//     },
+//     {
+//       "trait_type": "secondary_color",
+//       "value": "lazer red"
+//     },
+//     {
+//       "trait_type": "type",
+//       "value": "ethdenverbot"
+//     },
+// {
+//       "trait_type": "language",
+//       "value": "python/solidity/special"
+//     },
+//     {
+//       "trait_type": "armor",
+//       "value": "poop"
+//     },
+//     {
+//       "trait_type": "planet",
+//       "value": "poopworld"
+//     },
+//     {
+//       "trait_type": "energy",
+//       "value": "beans"
+//     },
+//     {
+//       "trait_type": "back",
+//       "value": "beans"
+//     },
+//     {
+//       "display_type": "number",
+//       "trait_type": "generation",
+//       "value": 2
+//     },
+
+//   ]
+// }

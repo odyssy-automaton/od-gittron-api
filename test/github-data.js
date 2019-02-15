@@ -2,18 +2,23 @@ require("dotenv").config();
 const GitHubData = require("../util/github-data");
 
 const ghData = {
-  repo: "od-gittron-contract",
-  owner: "odyssy-automaton"
+  repo: "timernator",
+  owner: "dekanbro"
 };
 
 const tester = async () => {
   githubData = new GitHubData(ghData);
 
   try {
-    const repoData = await githubData.getRepo();
+    const { data } = await githubData.getRepo();
+    githubData.repoData = data;
+
+    // const repoData = await githubData.getRepo();
     // const commitsCount = await githubData.getCommitsCount();
+    const stats = await githubData.generateStats();
     // const file = await githubData.getVerificationAddress();
-    console.log(repoData);
+    // console.log(repoData);
+    console.log(stats);
   } catch (err) {
     console.log(err);
   }

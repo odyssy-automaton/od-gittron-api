@@ -58,10 +58,11 @@ class GitHubData {
   }
 
   async generateStats() {
-    const stars = this.repoData.stargazers_count + this.repoData.watchers_count;
-    const commitSpeed = await this.commitsPer(this.repoData, "days");
+    let stars =
+      this.repoData.stargazers_count + this.repoData.watchers_count || 0;
+    let commitSpeed = (await this.commitsPer(this.repoData, "days")) || 0;
 
-    const sentiment = await this.getSentiment();
+    let sentiment = (await this.getSentiment()) || 0;
     const language = this.repoData.language
       ? this.repoData.language.toLowerCase()
       : "default";

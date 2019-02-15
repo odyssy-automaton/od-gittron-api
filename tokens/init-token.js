@@ -49,30 +49,20 @@ module.exports.initToken = async (event, context) => {
     const stats = await githubber.generateStats();
     const dna = generateDNA(stats, generation);
     const mutationDna = generateMutationDNA(generation);
-
-    const { primaryColor, secondaryColor } = getColors(dna);
-
-    //look up colors and rare names
-
-    //TODO: Add from name generator, change description?
-    //TODO: Mecha-<name or repo>-<type>
-    //Description: tokenId or dns string?
-    //meta: {
-    //primaryColor:
-    //secondaryColor:
-    //other stats
-
-    const meta = {
-      primaryColor,
-      secondaryColor,
-      stats
-    };
+    const metaAttributes = getMetaAttributes(
+      dna,
+      mutationDna,
+      stats.language,
+      generation
+    );
 
     const tokenUriData = {
       name: `Mecha-${reqData.repo}-${reqData.tokenType}`,
-      description: tokenId,
+      description:
+        "The year is 3369 and, throughout the universe, all biological life has been decimated. It's up to the Prime Bots to buidl their own future. They'll need help from the Worker and Support Bots in order to survive.",
       image: `https://s3.amazonaws.com/od-flat-svg/${tokenId}.png`,
-      meta: stats
+      external_url: `gittron.odyssy.io/bots/${tokenId}`,
+      attributes: metaAttributes
     };
 
     const params = {
@@ -90,6 +80,7 @@ module.exports.initToken = async (event, context) => {
         verified: false,
         orignalOwnerAddress: reqData.address,
         txHash: null,
+        stats,
         generation,
         dna,
         mutationDna

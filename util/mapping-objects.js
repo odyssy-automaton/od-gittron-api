@@ -12,7 +12,11 @@ const mappingObjects = {
     css: 82,
     rust: 91,
     default: 99
+  },
+  type: {
+    "00": "ethdenver"
   }
+
   //Can add other objects. key should match the dataSource string in creature-mapping.js
 };
 
