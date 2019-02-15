@@ -6,7 +6,8 @@ const GitHubData = require("../util/github-data");
 const {
   generateTokenID,
   generateDNA,
-  generateMutationDNA
+  generateMutationDNA,
+  getMetaAttributes
 } = require("../util/meta-maker");
 const { tokenCount } = require("../util/dyanamo-queries");
 
@@ -17,12 +18,7 @@ module.exports.initToken = async (event, context) => {
   const reqData = JSON.parse(event.body);
 
   // TODO: better validation here
-  if (
-    !reqData.repo ||
-    !reqData.repoOwner ||
-    !reqData.tokenType ||
-    !reqData.address
-  ) {
+  if (!reqData.repo || !reqData.repoOwner || !reqData.address) {
     console.error("Validation Failed");
     return {
       statusCode: 400,
@@ -45,7 +41,13 @@ module.exports.initToken = async (event, context) => {
 
     const generation = reqData.generation || 0;
     const count = await tokenCount();
-    const tokenId = generateTokenID(githubber.repoData.id, reqData, count);
+    const tokenType = "prime";
+    const tokenId = generateTokenID(
+      githubber.repoData.id,
+      reqData,
+      tokenType,
+      count
+    );
     const stats = await githubber.generateStats();
     const dna = generateDNA(stats, generation);
     const mutationDna = generateMutationDNA(generation);
@@ -57,7 +59,7 @@ module.exports.initToken = async (event, context) => {
     );
 
     const tokenUriData = {
-      name: `Mecha-${reqData.repo}-${reqData.tokenType}`,
+      name: `Mecha-${reqData.repo}-${tokenType}`,
       description:
         "The year is 3369 and, throughout the universe, all biological life has been decimated. It's up to the Prime Bots to buidl their own future. They'll need help from the Worker and Support Bots in order to survive.",
       image: `https://s3.amazonaws.com/od-flat-svg/${tokenId}.png`,
@@ -75,7 +77,7 @@ module.exports.initToken = async (event, context) => {
         tokenUriData: tokenUriData,
         createdAt: timestamp,
         updatedAt: timestamp,
-        tokenType: reqData.tokenType,
+        tokenType,
         mined: false,
         verified: false,
         orignalOwnerAddress: reqData.address,

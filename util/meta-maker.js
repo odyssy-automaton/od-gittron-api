@@ -5,12 +5,12 @@ const { creatureMappings } = require("../util/creature-mappings");
 const { mutationMappings } = require("../util/mutation-mappings");
 const { mappingObjects } = require("../util/mapping-objects");
 
-const generateTokenID = (ghid, reqData, count, gen) => {
+const generateTokenID = (ghid, reqData, tokenType, count, gen) => {
   const generation = gen || 0;
 
   const data = JSON.stringify({
     id: ghid,
-    tokenType: reqData.tokenType,
+    tokenType: tokenType,
     generation,
     count,
     originatorAddress: reqData.address
@@ -140,6 +140,10 @@ const getMetaAttributes = (dnaString, mutationDna, language, generation) => {
 
     if (trait[0] === "generation") {
       res.display_type = "number";
+    }
+
+    if (res.value === "") {
+      res.value = null;
     }
 
     return res;
