@@ -113,6 +113,22 @@ const addMutationSvgs = (dnaString, svgs) => {
   return svgs;
 };
 
+const getColors = dnaString => {
+  const dna = fromDnaString(dnaString);
+
+  const primaryColor = creatureMappings.primaryColor.rangeMapping.find(r => {
+    let index = creatureMappings.primaryColor.dnaIndex;
+    return dna[index].between(r.range[0], r.range[1]);
+  }).name;
+
+  const secondaryColor = creatureMappings.primaryColor.rangeMapping.find(r => {
+    let index = creatureMappings.secondaryColor.dnaIndex;
+    return dna[index].between(r.range[0], r.range[1]);
+  }).name;
+
+  return { primaryColor, secondaryColor };
+};
+
 const mapToSvg = (value, section) => {
   return creatureMappings[section].rangeMapping.find(r => {
     return value.between(r.range[0], r.range[1]);
@@ -151,6 +167,7 @@ module.exports = {
   generateMutationDNA,
   generateSvgPayload,
   addMutationSvgs,
+  getColors,
   toDnaString,
   fromDnaString
 };

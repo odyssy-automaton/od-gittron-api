@@ -49,11 +49,27 @@ module.exports.initToken = async (event, context) => {
     const stats = await githubber.generateStats();
     const dna = generateDNA(stats, generation);
     const mutationDna = generateMutationDNA(generation);
+    const { primaryColor, secondaryColor } = getColors(dna);
+
+    //look up colors and rare names
 
     //TODO: Add from name generator, change description?
+    //TODO: Mecha-<name or repo>-<type>
+    //Description: tokenId or dns string?
+    //meta: {
+    //primaryColor:
+    //secondaryColor:
+    //other stats
+
+    const meta = {
+      primaryColor,
+      secondaryColor,
+      stats
+    };
+
     const tokenUriData = {
-      name: tokenId,
-      description: dna,
+      name: `Mecha-${reqData.repo}-${reqData.tokenType}`,
+      description: tokenId,
       image: `https://s3.amazonaws.com/od-flat-svg/${tokenId}.png`,
       meta: stats
     };

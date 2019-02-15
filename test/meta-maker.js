@@ -4,6 +4,7 @@ const {
   alterDNA,
   generateMutationDNA,
   addMutationSvgs,
+  getColors,
   fromDnaString,
   generateTokenID
 } = require("../util/meta-maker");
@@ -48,7 +49,7 @@ const reqData = {
   generation: "0"
 };
 
-const dnaString = "00-32-06-36-95-50-24-00";
+const dnaString = "00-32-06-36-95-50-01-00";
 
 // const res = generateSvgPayload(dnaString);
 // const res = generateDNA(repoData.tokenUriData.meta, 0);
@@ -58,8 +59,10 @@ const dnaString = "00-32-06-36-95-50-24-00";
 
 // const res = alterDNA(dnaString);
 // const res = generateMutationDNA(0, "00-30");
-const svgs = ["1", "2", "3", "4"];
-const dna = "99-99";
-const res = addMutationSvgs(dna, svgs);
+// const svgs = ["1", "2", "3", "4"];
+// const dna = "99-99";
+// const res = addMutationSvgs(dna, svgs);
+
+const res = getColors(dnaString);
 
 console.log(res);
