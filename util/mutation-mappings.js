@@ -8,11 +8,11 @@ const mutationMappings = {
       {
         range: [0, 79],
         name: "",
-        svg: "",        
+        svg: ""
       },
       {
         range: [80, 99],
-        name: "Sparkling Armor"
+        name: "Sparkling Armor",
         svg:
           "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Rare--Armor--1.svg"
       }
@@ -43,7 +43,7 @@ const mutationMappings = {
       },
       {
         range: [80, 99],
-        name: "SuperEarth"
+        name: "SuperEarth",
         svg:
           "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Rare--Planet--3.svg"
       }

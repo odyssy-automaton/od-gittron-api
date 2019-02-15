@@ -49,6 +49,7 @@ module.exports.initToken = async (event, context) => {
     const stats = await githubber.generateStats();
     const dna = generateDNA(stats, generation);
     const mutationDna = generateMutationDNA(generation);
+
     const { primaryColor, secondaryColor } = getColors(dna);
 
     //look up colors and rare names

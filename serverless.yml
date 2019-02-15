@@ -81,13 +81,6 @@ functions:
           path: tokenstatus
           method: put
           cors: true
-  update:
-    handler: tokens/update.update
-    events:
-      - http:
-          path: tokens/{tokenId}/{ghid}
-          method: put
-          cors: true
   workerSupporter:
     handler: tokens/worker-supporter.workerSupporter
     events:
