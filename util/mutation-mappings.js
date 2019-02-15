@@ -8,7 +8,7 @@ const mutationMappings = {
       {
         range: [0, 79],
         name: "",
-        svg: "",        
+        svg: ""
       },
       {
         range: [80, 99],

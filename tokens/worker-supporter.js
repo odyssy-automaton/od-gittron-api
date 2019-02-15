@@ -31,7 +31,8 @@ module.exports.workerSupporter = async (event, context) => {
       name: tokenId,
       description: dna,
       image: `https://s3.amazonaws.com/od-flat-svg/${tokenId}.png`,
-      meta: masterToken.tokenUriData.meta
+      external_url: `gittron.odyssy.io/bots/${tokenId}`,
+      attributes: masterToken.tokenUriData.metaAttributes
     };
 
     const params = {
@@ -48,6 +49,7 @@ module.exports.workerSupporter = async (event, context) => {
         mined: false,
         orignalOwnerAddress: reqData.address,
         txHash: null,
+        stats: masterToken.stats,
         generation: masterToken.generation,
         dna,
         mutationDna: masterToken.mutationDna
