@@ -2,7 +2,7 @@
 require("dotenv").config();
 
 const AWS = require("aws-sdk");
-const { generateTokenID, alterDNA } = require("../util/meta-maker");
+const { generateTokenID, alterDNA, getColors } = require("../util/meta-maker");
 const { tokenCount, getByTokenId } = require("../util/dyanamo-queries");
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
@@ -26,13 +26,18 @@ module.exports.workerSupporter = async (event, context) => {
     );
 
     const dna = alterDNA(masterToken.dna);
+    const { primaryColor, secondaryColor } = getColors(dna);
+
+    const attributes = [...masterToken.tokenUriData.attributes];
+    attributes[0].value = primaryColor;
+    attributes[1].value = secondaryColor;
 
     const tokenUriData = {
       name: tokenId,
       description: dna,
       image: `https://s3.amazonaws.com/od-flat-svg/${tokenId}.png`,
       external_url: `gittron.odyssy.io/bots/${tokenId}`,
-      attributes: masterToken.tokenUriData.metaAttributes
+      attributes
     };
 
     const params = {
