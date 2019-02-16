@@ -14,7 +14,7 @@ module.exports.checkTransactionStatus = async (event, context) => {
   const timestamp = new Date().getTime();
   const data = JSON.parse(event.body);
 
-  if (!data.txHash || !data.tokenId || !data.ghid) {
+  if (!data.tokenId || !data.ghid) {
     console.error("Validation Failed");
     return {
       statusCode: 400,
@@ -27,7 +27,7 @@ module.exports.checkTransactionStatus = async (event, context) => {
   }
 
   try {
-    if (data.txHash === "rejected") {
+    if (data.txHash === "rejected" || !data.txHash) {
       await disableToken(data.tokenId, data.ghid);
 
       return {
