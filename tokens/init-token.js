@@ -44,9 +44,10 @@ module.exports.initToken = async (event, context) => {
     const uuid = await uuidRand();
     const tokenId = generateTokenID(
       githubber.repoData.id,
-      reqData,
+      reqData.address,
       tokenType,
-      uuid
+      uuid,
+      generation
     );
     const stats = await githubber.generateStats();
     const dna = generateDNA(stats, generation);
@@ -61,7 +62,7 @@ module.exports.initToken = async (event, context) => {
     const tokenUriData = {
       name: `Mecha-${reqData.repo}-${tokenType}`,
       description:
-        "The year is 3369 and, throughout the universe, all biological life has been decimated. It's up to the Prime Bots to buidl their own future. They'll need help from the Worker and Support Bots in order to survive.",
+        "The year is 3369 and, throughout the universe, all biological life has been decimated. It's up to the Prime Bots to buidl their own future. They'll need help from the Buidl and Support Bots in order to survive.",
       image: `https://s3.amazonaws.com/od-flat-svg/${tokenId}.png`,
       external_url: `gittron.odyssy.io/bots/${tokenId}`,
       attributes: metaAttributes
@@ -80,6 +81,7 @@ module.exports.initToken = async (event, context) => {
         tokenType,
         mined: false,
         verified: false,
+        disabled: false,
         orignalOwnerAddress: reqData.address,
         txHash: null,
         stats,
