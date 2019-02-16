@@ -279,7 +279,6 @@ const creatureMappings = {
       },
       {
         range: [60, 64],
-        range: [0, 5],
         color: "#e2db50",
         name: "Golden Prime"
       },
