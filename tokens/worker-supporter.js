@@ -53,6 +53,7 @@ module.exports.workerSupporter = async (event, context) => {
         updatedAt: timestamp,
         tokenType: reqData.tokenType,
         mined: false,
+        disabled: false,
         orignalOwnerAddress: reqData.address,
         txHash: null,
         stats: masterToken.stats,

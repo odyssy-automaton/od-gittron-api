@@ -81,6 +81,7 @@ module.exports.initToken = async (event, context) => {
         tokenType,
         mined: false,
         verified: false,
+        disabled: false,
         orignalOwnerAddress: reqData.address,
         txHash: null,
         stats,
