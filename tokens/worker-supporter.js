@@ -33,7 +33,7 @@ module.exports.workerSupporter = async (event, context) => {
     attributes[1].value = secondaryColor;
 
     const tokenUriData = {
-      name: `${reqData.tokenType}er-${tokenId}`,
+      name: `${reqData.tokenType}er ${tokenId}`,
       description:
         "The year is 3369 and, throughout the universe, all biological life has been decimated. It's up to the Prime Bots to buidl their own future. They'll need help from the Buidl and Support Bots in order to survive.",
       image: `https://s3.amazonaws.com/od-flat-svg/${tokenId}.png`,

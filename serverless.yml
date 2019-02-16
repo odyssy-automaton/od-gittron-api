@@ -6,12 +6,20 @@ package:
   exclude:
     - test/**
 
+plugins:
+  - serverless-domain-manager
+
 custom:
   myStage: ${opt:stage, self:provider.stage}
   myEnvironment:
     ORIGIN:
       prod: "https://gittron.me"
       dev: "*"
+  customDomain:
+    domainName: api.gittron.me
+    basePath: ""
+    stage: prod
+    createRoute53Record: true
 
 provider:
   name: aws

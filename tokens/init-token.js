@@ -60,7 +60,7 @@ module.exports.initToken = async (event, context) => {
     );
 
     const tokenUriData = {
-      name: `Mecha-${reqData.repo}-${tokenType}`,
+      name: `Mecha ${reqData.repo} ${tokenType}`,
       description:
         "The year is 3369 and, throughout the universe, all biological life has been decimated. It's up to the Prime Bots to buidl their own future. They'll need help from the Buidl and Support Bots in order to survive.",
       image: `https://s3.amazonaws.com/od-flat-svg/${tokenId}.png`,
