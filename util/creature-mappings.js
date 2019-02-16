@@ -146,15 +146,15 @@ const creatureMappings = {
         svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Head--7.svg"
       },
       {
-        range: [70, 79],
+        range: [70, 84],
         svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Head--8.svg"
       },
       {
-        range: [80, 89],
+        range: [85, 94],
         svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Head--9.svg"
       },
       {
-        range: [90, 99],
+        range: [95, 99],
         svg:
           "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Head--Bufficorn.svg"
       }
