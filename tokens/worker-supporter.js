@@ -2,8 +2,8 @@
 require("dotenv").config();
 
 const AWS = require("aws-sdk");
-const { generateTokenID, alterDNA, getColors } = require("../util/meta-maker");
-const { tokenCount, getByTokenId } = require("../util/dyanamo-queries");
+const { generateTokenID, alterDNA } = require("../util/meta-maker");
+const { uuidRand, getByTokenId } = require("../util/dyanamo-queries");
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
@@ -14,14 +14,14 @@ module.exports.workerSupporter = async (event, context) => {
   //TODO: Validation
 
   try {
-    const count = await tokenCount();
+    const uuid = await uuidRand();
     const getRes = await getByTokenId(reqData.masterTokenId);
     const masterToken = getRes.Items[0];
 
     const tokenId = generateTokenID(
       masterToken.ghid,
       reqData,
-      count.Count,
+      uuid,
       masterToken.generation
     );
 
@@ -57,7 +57,8 @@ module.exports.workerSupporter = async (event, context) => {
         stats: masterToken.stats,
         generation: masterToken.generation,
         dna,
-        mutationDna: masterToken.mutationDna
+        mutationDna: masterToken.mutationDna,
+        uuid
       }
     };
 
@@ -79,7 +80,7 @@ module.exports.workerSupporter = async (event, context) => {
       statusCode: 200,
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*"
+        "Access-Control-Allow-Origin": process.env.ORIGIN
       },
       body: JSON.stringify(params.Item)
     };
@@ -89,7 +90,7 @@ module.exports.workerSupporter = async (event, context) => {
       statusCode: 400,
       headers: {
         "Content-Type": "text/plain",
-        "Access-Control-Allow-Origin": "*"
+        "Access-Control-Allow-Origin": process.env.ORIGIN
       },
       body: error
     };

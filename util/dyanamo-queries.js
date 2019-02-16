@@ -2,6 +2,11 @@
 
 const AWS = require("aws-sdk");
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
+const crypto = require("crypto");
+
+const uuidRand = function() {
+  return crypto.randomBytes(16).toString("hex");
+};
 
 const tokenCount = function() {
   const params = {
@@ -68,6 +73,7 @@ const deleteToken = function(tokenId, ghid) {
 
 module.exports = {
   tokenCount,
+  uuidRand,
   getByTokenId,
   deleteToken
 };

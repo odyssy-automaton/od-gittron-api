@@ -9,7 +9,7 @@ const {
   generateMutationDNA,
   getMetaAttributes
 } = require("../util/meta-maker");
-const { tokenCount } = require("../util/dyanamo-queries");
+const { uuidRand, uuidRand } = require("../util/dyanamo-queries");
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
@@ -24,7 +24,7 @@ module.exports.initToken = async (event, context) => {
       statusCode: 400,
       headers: {
         "Content-Type": "text/plain",
-        "Access-Control-Allow-Origin": "*"
+        "Access-Control-Allow-Origin": process.env.ORIGIN
       },
       body: "Failed validation."
     };
@@ -40,14 +40,8 @@ module.exports.initToken = async (event, context) => {
     githubber.repoData = data;
 
     const generation = reqData.generation || 0;
-    const count = await tokenCount();
-    const tokenType = "prime";
-    const tokenId = generateTokenID(
-      githubber.repoData.id,
-      reqData,
-      tokenType,
-      count
-    );
+    const uuid = await uuidRand();
+    const tokenId = generateTokenID(githubber.repoData.id, reqData, uuid);
     const stats = await githubber.generateStats();
     const dna = generateDNA(stats, generation);
     const mutationDna = generateMutationDNA(generation);
@@ -85,7 +79,8 @@ module.exports.initToken = async (event, context) => {
         stats,
         generation,
         dna,
-        mutationDna
+        mutationDna,
+        uuid
       }
     };
 
@@ -107,7 +102,7 @@ module.exports.initToken = async (event, context) => {
       statusCode: 200,
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*"
+        "Access-Control-Allow-Origin": process.env.ORIGIN
       },
       body: JSON.stringify(params.Item)
     };
@@ -117,7 +112,7 @@ module.exports.initToken = async (event, context) => {
       statusCode: 400,
       headers: {
         "Content-Type": "text/plain",
-        "Access-Control-Allow-Origin": "*"
+        "Access-Control-Allow-Origin": process.env.ORIGIN
       },
       body: error
     };

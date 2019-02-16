@@ -15,7 +15,7 @@ module.exports.list = (event, context, callback) => {
         statusCode: error.statusCode || 501,
         headers: {
           "Content-Type": "text/plain",
-          "Access-Control-Allow-Origin": "*"
+          "Access-Control-Allow-Origin": process.env.ORIGIN
         },
         body: "Couldn't fetch the repos."
       });
@@ -26,7 +26,7 @@ module.exports.list = (event, context, callback) => {
       statusCode: 200,
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*"
+        "Access-Control-Allow-Origin": process.env.ORIGIN
       },
       body: JSON.stringify(result.Items)
     };

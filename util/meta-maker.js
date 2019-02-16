@@ -5,14 +5,14 @@ const { creatureMappings } = require("../util/creature-mappings");
 const { mutationMappings } = require("../util/mutation-mappings");
 const { mappingObjects } = require("../util/mapping-objects");
 
-const generateTokenID = (ghid, reqData, tokenType, count, gen) => {
+const generateTokenID = (ghid, reqData, tokenType, uuid, gen) => {
   const generation = gen || 0;
 
   const data = JSON.stringify({
     id: ghid,
     tokenType: tokenType,
     generation,
-    count,
+    uuid,
     originatorAddress: reqData.address
   });
 
@@ -102,11 +102,11 @@ const addMutationSvgs = (dnaString, svgs) => {
     const res = mapToMutationSvg(dna[mutation[1].dnaIndex], mutation[0]);
 
     if (+mutation[1].layerIndex && res.svg !== "") {
-      svgs.unshift(res.svg);
+      svgs.push(res.svg);
     }
 
     if (!+mutation[1].layerIndex && res.svg !== "") {
-      svgs.push(res.svg);
+      svgs.unshift(res.svg);
     }
   });
 
