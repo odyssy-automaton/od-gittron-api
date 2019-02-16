@@ -38,31 +38,31 @@ const creatureMappings = {
     dataSource: "commitSpeed",
     rangeMapping: [
       {
-        range: [0, 9],
+        range: [0, 13],
         svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Legs--1.svg"
       },
       {
-        range: [10, 19],
+        range: [14, 27],
         svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Legs--2.svg"
       },
       {
-        range: [20, 29],
+        range: [28, 41],
         svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Legs--3.svg"
       },
       {
-        range: [30, 39],
+        range: [42, 55],
         svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Legs--4.svg"
       },
       {
-        range: [40, 49],
+        range: [56, 69],
         svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Legs--5.svg"
       },
       {
-        range: [50, 59],
+        range: [70, 83],
         svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Legs--6.svg"
       },
       {
-        range: [60, 99],
+        range: [84, 99],
         svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Legs--7.svg"
       }
     ]
@@ -134,7 +134,7 @@ const creatureMappings = {
         svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Head--4.svg"
       },
       {
-        range: [40, 99],
+        range: [40, 49],
         svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Head--5.svg"
       },
       {
@@ -150,11 +150,11 @@ const creatureMappings = {
         svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Head--8.svg"
       },
       {
-        range: [80, 98],
+        range: [80, 89],
         svg: "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Head--9.svg"
       },
       {
-        range: [99, 99],
+        range: [90, 99],
         svg:
           "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Head--Bufficorn.svg"
       }
