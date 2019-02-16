@@ -118,7 +118,7 @@ const getMetaAttributes = (dnaString, mutationDna, language, generation) => {
 
   const { primaryColor, secondaryColor } = getColors(dnaString);
   const type = getType(dnaString);
-  const [armor, planet, energy, back] = getMutationAttributes(mutationDna);
+  const [armor, origin, energy, backGear] = getMutationAttributes(mutationDna);
 
   const traits = {
     primaryColor,
@@ -126,9 +126,9 @@ const getMetaAttributes = (dnaString, mutationDna, language, generation) => {
     type,
     language,
     armor,
-    planet,
+    origin,
     energy,
-    back,
+    backGear,
     generation
   };
 
