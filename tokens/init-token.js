@@ -9,7 +9,7 @@ const {
   generateMutationDNA,
   getMetaAttributes
 } = require("../util/meta-maker");
-const { uuidRand, uuidRand } = require("../util/dyanamo-queries");
+const { uuidRand } = require("../util/dyanamo-queries");
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
@@ -40,8 +40,14 @@ module.exports.initToken = async (event, context) => {
     githubber.repoData = data;
 
     const generation = reqData.generation || 0;
+    const tokenType = "prime";
     const uuid = await uuidRand();
-    const tokenId = generateTokenID(githubber.repoData.id, reqData, uuid);
+    const tokenId = generateTokenID(
+      githubber.repoData.id,
+      reqData,
+      tokenType,
+      uuid
+    );
     const stats = await githubber.generateStats();
     const dna = generateDNA(stats, generation);
     const mutationDna = generateMutationDNA(generation);

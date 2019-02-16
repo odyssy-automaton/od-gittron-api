@@ -2,7 +2,7 @@
 require("dotenv").config();
 
 const AWS = require("aws-sdk");
-const { generateTokenID, alterDNA } = require("../util/meta-maker");
+const { generateTokenID, alterDNA, getColors } = require("../util/meta-maker");
 const { uuidRand, getByTokenId } = require("../util/dyanamo-queries");
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();

@@ -158,10 +158,12 @@ const getColors = dnaString => {
     return dna[index].between(r.range[0], r.range[1]);
   }).name;
 
-  const secondaryColor = creatureMappings.primaryColor.rangeMapping.find(r => {
-    let index = creatureMappings.secondaryColor.dnaIndex;
-    return dna[index].between(r.range[0], r.range[1]);
-  }).name;
+  const secondaryColor = creatureMappings.secondaryColor.rangeMapping.find(
+    r => {
+      let index = creatureMappings.secondaryColor.dnaIndex;
+      return dna[index].between(r.range[0], r.range[1]);
+    }
+  ).name;
 
   return { primaryColor, secondaryColor };
 };
