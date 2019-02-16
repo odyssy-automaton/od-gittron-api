@@ -14,7 +14,6 @@ module.exports.checkTransactionStatus = async (event, context) => {
   const timestamp = new Date().getTime();
   const data = JSON.parse(event.body);
 
-  // TODO: better validation
   if (!data.txHash || !data.tokenId || !data.ghid) {
     console.error("Validation Failed");
     return {
@@ -41,6 +40,22 @@ module.exports.checkTransactionStatus = async (event, context) => {
           message: "Disabled bot after error or rejection"
         })
       };
+    } else {
+      const updateTxParams = {
+        TableName: process.env.DYNAMODB_TABLE,
+        Key: {
+          tokenId: data.tokenId,
+          ghid: data.ghid
+        },
+        ExpressionAttributeValues: {
+          ":txHash": data.txHash,
+          ":updatedAt": timestamp
+        },
+        UpdateExpression: "SET txHash = :txHash, updatedAt = :updatedAt",
+        ReturnValues: "ALL_NEW"
+      };
+
+      await updateToken(updateTxParams);
     }
 
     const api = new EtherScanApi();
@@ -65,7 +80,7 @@ module.exports.checkTransactionStatus = async (event, context) => {
         ReturnValues: "ALL_NEW"
       };
 
-      await updateToken(params);
+      await updateToken(updateParams);
 
       return {
         statusCode: 200,
