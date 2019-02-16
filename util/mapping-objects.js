@@ -1,8 +1,8 @@
 const mappingObjects = {
   language: {
     solidity: 0,
-    javascript: 1,
-    python: 2,
+    python: 1,
+    javascript: 2,
     go: 3,
     java: 4,
     ruby: 5,
