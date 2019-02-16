@@ -3,7 +3,7 @@ require("dotenv").config();
 
 const AWS = require("aws-sdk");
 const { generateTokenID, alterDNA } = require("../util/meta-maker");
-const { tokenCount, getByTokenId } = require("../util/dyanamo-queries");
+const { uuidRand, getByTokenId } = require("../util/dyanamo-queries");
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
@@ -14,7 +14,7 @@ module.exports.workerSupporter = async (event, context) => {
   //TODO: Validation
 
   try {
-    const count = await tokenCount();
+    const count = await uuidRand();
     const getRes = await getByTokenId(reqData.masterTokenId);
     const masterToken = getRes.Items[0];
 
