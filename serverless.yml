@@ -20,7 +20,6 @@ custom:
     basePath: ""
     stage: prod
     createRoute53Record: true
-    # certificateName:
 
 provider:
   name: aws
