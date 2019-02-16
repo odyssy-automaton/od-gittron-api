@@ -2,7 +2,7 @@
 
 const AWS = require("aws-sdk");
 const EtherScanApi = require("../util/etherscan-api");
-const { deleteToken } = require("../util/dyanamo-queries");
+const { disableToken, updateToken } = require("../util/dyanamo-queries");
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
@@ -29,7 +29,7 @@ module.exports.checkTransactionStatus = async (event, context) => {
 
   try {
     if (data.txHash === "rejected") {
-      await deleteToken(data.tokenId, data.ghid);
+      await disableToken(data.tokenId, data.ghid);
 
       return {
         statusCode: 200,
@@ -38,7 +38,7 @@ module.exports.checkTransactionStatus = async (event, context) => {
           "Access-Control-Allow-Origin": process.env.ORIGIN
         },
         body: JSON.stringify({
-          message: "Deleted item after error or rejection"
+          message: "Disabled bot after error or rejection"
         })
       };
     }
@@ -65,19 +65,7 @@ module.exports.checkTransactionStatus = async (event, context) => {
         ReturnValues: "ALL_NEW"
       };
 
-      const updateItem = new Promise((res, rej) => {
-        dynamoDb.update(updateParams, function(err, data) {
-          if (err) {
-            console.log("Error", err);
-            rej(err);
-          } else {
-            console.log("Success", data);
-            res("Hi, data update completed");
-          }
-        });
-      });
-
-      await updateItem;
+      await updateToken(params);
 
       return {
         statusCode: 200,
@@ -88,27 +76,7 @@ module.exports.checkTransactionStatus = async (event, context) => {
         body: JSON.stringify({ message: "Transaction Mined" })
       };
     } else if (status === "0x0") {
-      const deleteParams = {
-        TableName: process.env.DYNAMODB_TABLE,
-        Key: {
-          ghid: data.ghid,
-          tokenId: data.tokenid
-        }
-      };
-
-      const deleteItem = new Promise((res, rej) => {
-        dynamoDb.delete(deleteParams, function(err, data) {
-          if (err) {
-            console.log("Error", err);
-            rej(err);
-          } else {
-            console.log("Success", data);
-            res(data);
-          }
-        });
-      });
-
-      await deleteItem;
+      await disableToken(data.tokenId, data.ghid);
 
       return {
         statusCode: 200,
@@ -116,7 +84,7 @@ module.exports.checkTransactionStatus = async (event, context) => {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": process.env.ORIGIN
         },
-        body: JSON.stringify({ status: "Deleted" })
+        body: JSON.stringify({ status: "disabled" })
       };
     } else {
       return {
