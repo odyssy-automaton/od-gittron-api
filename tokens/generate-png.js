@@ -74,7 +74,7 @@ module.exports.generatePng = async (event, context) => {
       statusCode: 200,
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*"
+        "Access-Control-Allow-Origin": process.env.ORIGIN
       },
       body: svgData.Payload
     };
@@ -84,7 +84,7 @@ module.exports.generatePng = async (event, context) => {
       statusCode: error.statusCode || 501,
       headers: {
         "Content-Type": "text/plain",
-        "Access-Control-Allow-Origin": "*"
+        "Access-Control-Allow-Origin": process.env.ORIGIN
       },
       body: "no robot."
     };

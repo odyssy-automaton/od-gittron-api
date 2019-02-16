@@ -36,7 +36,7 @@ module.exports.tokenUri = (event, context, callback) => {
         statusCode: 200,
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*"
+          "Access-Control-Allow-Origin": process.env.ORIGIN
         },
         body: JSON.stringify(uriData)
       };

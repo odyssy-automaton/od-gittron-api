@@ -21,7 +21,7 @@ module.exports.checkTransactionStatus = async (event, context) => {
       statusCode: 400,
       headers: {
         "Content-Type": "text/plain",
-        "Access-Control-Allow-Origin": "*"
+        "Access-Control-Allow-Origin": process.env.ORIGIN
       },
       body: "Couldn't update the repo."
     };
@@ -35,7 +35,7 @@ module.exports.checkTransactionStatus = async (event, context) => {
         statusCode: 200,
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*"
+          "Access-Control-Allow-Origin": process.env.ORIGIN
         },
         body: JSON.stringify({
           message: "Deleted item after error or rejection"
@@ -83,7 +83,7 @@ module.exports.checkTransactionStatus = async (event, context) => {
         statusCode: 200,
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*"
+          "Access-Control-Allow-Origin": process.env.ORIGIN
         },
         body: JSON.stringify({ message: "Transaction Mined" })
       };
@@ -114,7 +114,7 @@ module.exports.checkTransactionStatus = async (event, context) => {
         statusCode: 200,
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*"
+          "Access-Control-Allow-Origin": process.env.ORIGIN
         },
         body: JSON.stringify({ status: "Deleted" })
       };
@@ -123,7 +123,7 @@ module.exports.checkTransactionStatus = async (event, context) => {
         statusCode: 200,
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*"
+          "Access-Control-Allow-Origin": process.env.ORIGIN
         },
         body: JSON.stringify({ status: "Pending" })
       };
@@ -134,7 +134,7 @@ module.exports.checkTransactionStatus = async (event, context) => {
       statusCode: 400,
       headers: {
         "Content-Type": "text/plain",
-        "Access-Control-Allow-Origin": "*"
+        "Access-Control-Allow-Origin": process.env.ORIGIN
       },
       body: error
     };

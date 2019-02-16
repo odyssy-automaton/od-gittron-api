@@ -79,7 +79,7 @@ module.exports.workerSupporter = async (event, context) => {
       statusCode: 200,
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*"
+        "Access-Control-Allow-Origin": process.env.ORIGIN
       },
       body: JSON.stringify(params.Item)
     };
@@ -89,7 +89,7 @@ module.exports.workerSupporter = async (event, context) => {
       statusCode: 400,
       headers: {
         "Content-Type": "text/plain",
-        "Access-Control-Allow-Origin": "*"
+        "Access-Control-Allow-Origin": process.env.ORIGIN
       },
       body: error
     };

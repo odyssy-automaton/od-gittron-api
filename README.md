@@ -17,7 +17,8 @@ serverless deploy function --function myFunction
 Production deploy
 
 ```bash
-serverless deploy --stage production --region us-east-1
+serverless deploy --stage dev
+serverless deploy --stage prod
 ```
 
 #### TODO:

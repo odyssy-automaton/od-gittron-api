@@ -6,10 +6,12 @@ package:
   exclude:
     - test/**
 
-# custom:
-#   webHost:
-#     dev: localhost
-#     prod: primebot.odyssy.io
+custom:
+  myStage: ${opt:stage, self:provider.stage}
+  myEnvironment:
+    ORIGIN:
+      prod: "https://gittron.me"
+      dev: "*"
 
 provider:
   name: aws
@@ -18,6 +20,8 @@ provider:
   stage: dev
   environment:
     DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+    ORIGIN: ${self:custom.myEnvironment.ORIGIN.${self:custom.myStage}}
+
   iamRoleStatements:
     - Effect: Allow
       Action:

@@ -20,7 +20,7 @@ module.exports.getByTokenId = (event, context, callback) => {
         statusCode: error.statusCode || 501,
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*"
+          "Access-Control-Allow-Origin": process.env.ORIGIN
         },
         body: "Couldn't fetch the robot."
       });
@@ -32,7 +32,7 @@ module.exports.getByTokenId = (event, context, callback) => {
         statusCode: 200,
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*"
+          "Access-Control-Allow-Origin": process.env.ORIGIN
         },
         body: JSON.stringify(result.Items[0])
       };
@@ -42,7 +42,7 @@ module.exports.getByTokenId = (event, context, callback) => {
         statusCode: 200,
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*"
+          "Access-Control-Allow-Origin": process.env.ORIGIN
         },
         body: "no robot at this id"
       };
