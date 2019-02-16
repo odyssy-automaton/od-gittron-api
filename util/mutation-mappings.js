@@ -18,7 +18,7 @@ const mutationMappings = {
       }
     ]
   },
-  planet: {
+  origin: {
     layerIndex: 0,
     dnaIndex: 1,
     randomAssignment: true,
@@ -43,7 +43,7 @@ const mutationMappings = {
       },
       {
         range: [80, 99],
-        name: "SuperEarth",
+        name: "Super Earth",
         svg:
           "https://s3.amazonaws.com/odyssy-assets/bots/Gittron__Rare--Planet--3.svg"
       }
@@ -74,7 +74,7 @@ const mutationMappings = {
       }
     ]
   },
-  back: {
+  backGear: {
     layerIndex: 0,
     dnaIndex: 3,
     randomAssignment: true,

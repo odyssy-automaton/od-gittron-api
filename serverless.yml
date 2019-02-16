@@ -99,6 +99,13 @@ functions:
           path: verifyrepo/{tokenId}
           method: put
           cors: true
+  disableToken:
+    handler: tokens/disable.disable
+    events:
+      - http:
+          path: disable/{tokenId}/{ghid}
+          method: put
+          cors: true
 
 resources:
   Resources:
