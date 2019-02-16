@@ -13,7 +13,10 @@ module.exports.list = (event, context, callback) => {
       console.error(error);
       callback(null, {
         statusCode: error.statusCode || 501,
-        headers: { "Content-Type": "text/plain" },
+        headers: {
+          "Content-Type": "text/plain",
+          "Access-Control-Allow-Origin": process.env.ORIGIN
+        },
         body: "Couldn't fetch the repos."
       });
       return;
@@ -21,6 +24,10 @@ module.exports.list = (event, context, callback) => {
 
     const response = {
       statusCode: 200,
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": process.env.ORIGIN
+      },
       body: JSON.stringify(result.Items)
     };
     callback(null, response);

@@ -1,10 +1,17 @@
-service: od-gittron-api
+service: gittron-bot-api
 
 frameworkVersion: ">=1.1.0 <2.0.0"
 
 package:
   exclude:
     - test/**
+
+custom:
+  myStage: ${opt:stage, self:provider.stage}
+  myEnvironment:
+    ORIGIN:
+      prod: "https://gittron.me"
+      dev: "*"
 
 provider:
   name: aws
@@ -13,6 +20,8 @@ provider:
   stage: dev
   environment:
     DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+    ORIGIN: ${self:custom.myEnvironment.ORIGIN.${self:custom.myStage}}
+
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -22,65 +31,102 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+      Resource:
+        - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+        - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}/index/*"
 
 functions:
-  create:
-    handler: repos/create.create
+  initToken:
+    handler: tokens/init-token.initToken
     events:
       - http:
-          path: repos
+          path: tokens/new
           method: post
           cors: true
   list:
-    handler: repos/list.list
+    handler: tokens/list.list
     events:
       - http:
-          path: repos
+          path: tokens
           method: get
           cors: true
-  get:
-    handler: repos/get.get
+  getByRepo:
+    handler: tokens/get-by-repo.getByRepo
     events:
       - http:
-          path: repos/{id}
+          path: tokens/repo/{ghid}
           method: get
           cors: true
-  update:
-    handler: repos/update.update
+  getByTokenId:
+    handler: tokens/get-by-tokenid.getByTokenId
     events:
       - http:
-          path: repos/{id}
+          path: tokenid/{tokenId}
+          method: get
+          cors: true
+  uri:
+    handler: tokens/token-uri.tokenUri
+    events:
+      - http:
+          path: uri/{tokenId}
+          method: get
+          cors: true
+  generatePng:
+    handler: tokens/generate-png.generatePng
+    events:
+      - http:
+          path: generatepng
+          method: post
+          cors: true
+  checkTransactionStatus:
+    handler: tokens/check-transaction-status.checkTransactionStatus
+    events:
+      - http:
+          path: tokenstatus
           method: put
           cors: true
-  registered:
-    handler: repos/registered.registered
+  workerSupporter:
+    handler: tokens/worker-supporter.workerSupporter
     events:
       - http:
-          path: repos/registered/{repo}/{repoOwner}
-          method: get
+          path: tokens/workersupporter
+          method: post
           cors: true
-  tokenuri:
-    handler: repos/tokenuri.tokenuri
+  verifyRepo:
+    handler: tokens/verify-repo.verifyRepo
     events:
       - http:
-          path: repos/tokenuri/{id}
-          method: get
+          path: verifyrepo/{tokenId}
+          method: put
           cors: true
 
 resources:
   Resources:
-    ReposDynamoDbTable:
+    BotDynamoDbTable:
       Type: "AWS::DynamoDB::Table"
       DeletionPolicy: Retain
       Properties:
         AttributeDefinitions:
-          - AttributeName: id
+          - AttributeName: tokenId
+            AttributeType: S
+          - AttributeName: ghid
             AttributeType: S
         KeySchema:
-          - AttributeName: id
+          - AttributeName: tokenId
             KeyType: HASH
+          - AttributeName: ghid
+            KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         TableName: ${self:provider.environment.DYNAMODB_TABLE}
+        GlobalSecondaryIndexes:
+          - IndexName: byRepo
+            KeySchema:
+              - AttributeName: ghid
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
