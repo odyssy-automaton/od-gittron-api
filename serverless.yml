@@ -15,6 +15,9 @@ custom:
     ORIGIN:
       prod: "https://gittron.me"
       dev: "*"
+    URI_URL:
+      prod: "https://data.gittron.me/v1"
+      dev: "https://data.gittron.me/dev"
   # customDomain:
   #   domainName: api.gittron.me
   #   basePath: ""

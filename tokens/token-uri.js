@@ -18,7 +18,10 @@ module.exports.tokenUri = (event, context, callback) => {
       console.error(error);
       callback(null, {
         statusCode: error.statusCode || 501,
-        headers: { "Content-Type": "text/plain" },
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        },
         body: "Couldn't fetch the repo."
       });
       return;
@@ -36,7 +39,7 @@ module.exports.tokenUri = (event, context, callback) => {
         statusCode: 200,
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": process.env.ORIGIN
+          "Access-Control-Allow-Origin": "*"
         },
         body: JSON.stringify(uriData)
       };
@@ -44,6 +47,10 @@ module.exports.tokenUri = (event, context, callback) => {
     } else {
       const response = {
         statusCode: 200,
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        },
         body: "no robot at this uri"
       };
       callback(null, response);
