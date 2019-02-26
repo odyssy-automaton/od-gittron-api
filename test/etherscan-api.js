@@ -10,11 +10,10 @@ const tester = async () => {
     const res = await api.getTransaction(testTx);
     const res2 = await api.getTransactionReceipt(testTx);
 
-    // console.log(res);
+    console.log(res);
     console.log(res2);
     console.log(res2.result.status);
 
-    // console.log(commitsCount);
   } catch (err) {
     console.log(err);
   }

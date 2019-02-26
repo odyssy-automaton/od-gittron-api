@@ -118,6 +118,21 @@ functions:
           method: put
           cors: true
 
+  generatePrimeBot:
+    handler: bots/generate-prime-bot.generatePrimeBot
+    events:
+      - http:
+          path: bots/new-prime
+          method: post
+          cors: true
+  updateTxStatus:
+    handler: bots/update-tx-status.updateTxStatus
+    events:
+      - http:
+          path: bots/update-tx-status/{tokenId}
+          method: put
+          cors: true
+
 resources:
   Resources:
     BotDynamoDbTable:
