@@ -26,6 +26,10 @@ module.exports.updateTxStatus = async (event, context) => {
     const getRes = await getByTokenId(event.pathParameters.tokenId);
     const bot = getRes.Items[0];
 
+    if (!bot) {
+      throw "bot not found";
+    }
+
     if (reqData.disabled) {
       const api = new EtherScanApi();
       const txStatus = await api.txStatus(bot.txHash);
