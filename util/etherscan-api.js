@@ -11,6 +11,42 @@ class EtherScanApi {
     }
   }
 
+  async txStatus(txHash) {
+    let err, response;
+
+    if (txHash && txHash.length === 66) {
+      const receipt = await this.getTransactionReceipt(txHash);
+      console.log("receipt.result");
+      console.log(receipt.result);
+
+      if (receipt.result) {
+        response = receipt.result.status === "0x1" ? "success" : "failed";
+      } else {
+        const tx = await this.getTransaction(txHash);
+        console.log("tx");
+        console.log(tx);
+
+        response =
+          tx.result && !tx.result.blockNumber ? "pending" : "not found";
+      }
+    } else {
+      response = "invalid";
+    }
+
+    if (!response) {
+      err = `error finding status of tx ${txHash}`;
+    }
+
+    return new Promise((res, rej) => {
+      if (err) {
+        console.log("tx statust err " + err);
+        rej(err);
+      } else {
+        res(response);
+      }
+    });
+  }
+
   getTransaction(txHash) {
     return this.api.proxy.eth_getTransactionByHash(txHash);
   }

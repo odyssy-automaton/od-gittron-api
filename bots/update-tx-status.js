@@ -26,24 +26,20 @@ module.exports.updateTxStatus = async (event, context) => {
     const getRes = await getByTokenId(event.pathParameters.tokenId);
     const bot = getRes.Items[0];
 
-    console.log(bot.txHash.length);
-
-    if (reqData.disabled && bot.txHash !== null && bot.txHash.length === 66) {
-      console.log("checking etherscan");
+    if (reqData.disabled) {
       const api = new EtherScanApi();
-      const txStatus = await api.getTransactionReceipt(bot.txHash);
-      console.log(txStatus);
+      const txStatus = await api.txStatus(bot.txHash);
 
-      //TODO: Unknown if this is a valid pending status
-      const status = txStatus.result ? txStatus.result.status : "pending";
-      if (status !== "0x0") {
+      if (txStatus === "success" || txStatus === "pending") {
         return {
           statusCode: 400,
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "text/plain",
             "Access-Control-Allow-Origin": process.env.ORIGIN
           },
-          body: JSON.stringify({ message: "Cannot disable at this time" })
+          body: JSON.stringify({
+            message: `Cannot disable txStats: ${txStatus}`
+          })
         };
       }
     }

@@ -132,6 +132,13 @@ functions:
           path: bots/update-tx-status/{tokenId}
           method: put
           cors: true
+  getTxStatus:
+    handler: bots/get-tx-status.getTxStatus
+    events:
+      - http:
+          path: bots/get-tx-status/{tokenId}
+          method: get
+          cors: true
 
 resources:
   Resources:

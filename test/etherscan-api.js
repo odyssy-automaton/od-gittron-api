@@ -4,41 +4,18 @@ const tester = async () => {
   const api = new EtherScanApi();
 
   const testTx =
-    "0x1f2cbcb3bce2cd2bc21aab22229cdb5b9b6c00771ddfbaa9f2a9cbe652fad345";
+    "0x9492fa4ee290e83c433bf9d6a438d319a4302d223a7c90c797b6e19c3e9b4129";
+  // "0xd1a4ac4506a34598a88f08ed243a0643e8ce1e8224be0c262ce875d14f9ee34f";
+  // "0xaef7ab1c077c083c54725d5f32e4375ebcc3eed4ff073dc63a2b885333c2eaa8";
+  // "0xb876a7c9bd93e610d8eda4fa8a1d42cda224fa0da0abc66f4806fb3c20ad2c50";
+  // null;
 
   try {
-    const res = await api.getTransaction(testTx);
-    const res2 = await api.getTransactionReceipt(testTx);
-
+    const res = await api.txStatus(testTx);
     console.log(res);
-    console.log(res2);
-    console.log(res2.result.status);
-
   } catch (err) {
     console.log(err);
   }
 };
 
 tester();
-
-// 0x1 = success
-// 0x0 = fail
-// pending
-
-//sample success
-
-// { jsonrpc: '2.0',
-//   id: 1,
-//   result:
-//    { blockHash: '0xd20f401abd41dbdf87215f422ffaee1a986a7e2452777ee35527e9595dd50274',
-//      blockNumber: '0x34fe35',
-//      contractAddress: null,
-//      cumulativeGasUsed: '0x1325cc',
-//      from: '0xe3c2fe8e0bd01a0869018022676b17b12de873fc',
-//      gasUsed: '0x42c6e',
-//      logs: [ [Object] ],
-//      logsBloom: '0x04000000000000000000010000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000000018000000000000000000000080000000000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000100000000000000000000000000000010000000000000000002000000000000000000000000000000000004000800000000000000000000000000000000000000000000000000000000008000004000000000000000',
-//      status: '0x1',
-//      to: '0xccd2ce257d9e076f4cc5b4642453b77196e5820e',
-//      transactionHash: '0x1f2cbcb3bce2cd2bc21aab22229cdb5b9b6c00771ddfbaa9f2a9cbe652fad345',
-//      transactionIndex: '0x7' } }
