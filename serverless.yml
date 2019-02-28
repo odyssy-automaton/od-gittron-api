@@ -67,13 +67,6 @@ functions:
           path: tokenid/{tokenId}
           method: get
           cors: true
-  uri:
-    handler: tokens/token-uri.tokenUri
-    events:
-      - http:
-          path: uri/{tokenId}
-          method: get
-          cors: true
   generatePng:
     handler: tokens/generate-png.generatePng
     events:
@@ -117,6 +110,13 @@ functions:
           path: bots/new-prime
           method: post
           cors: true
+  cloneBot:
+    handler: bots/clone-bot.cloneBot
+    events:
+      - http:
+          path: bots/clone
+          method: post
+          cors: true
   updateTxStatus:
     handler: bots/update-tx-status.updateTxStatus
     events:
@@ -136,6 +136,34 @@ functions:
     events:
       - http:
           path: bots/hatch/{tokenId}
+          method: put
+          cors: true
+  get:
+    handler: bots/get.get
+    events:
+      - http:
+          path: bots/{tokenId}
+          method: get
+          cors: true
+  uri:
+    handler: bots/token-uri.tokenUri
+    events:
+      - http:
+          path: uri/{tokenId}
+          method: get
+          cors: true
+  all:
+    handler: bots/all.all
+    events:
+      - http:
+          path: bots
+          method: get
+          cors: true
+  verifyBot:
+    handler: bots/verify-bot.verifyBot
+    events:
+      - http:
+          path: bots/verify/{tokenId}
           method: put
           cors: true
 

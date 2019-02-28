@@ -9,12 +9,6 @@ const lambda = new AWS.Lambda({
 });
 
 module.exports.hatch = async (event, context) => {
-  // get bot
-  // TODO: More validation needed?
-  // FE is checking the tokenId against the contract, nothing else needed now
-  // Generate png
-  // Update record hatched=true
-
   try {
     const getRes = await getByTokenId(event.pathParameters.tokenId);
     const bot = getRes.Items[0];
