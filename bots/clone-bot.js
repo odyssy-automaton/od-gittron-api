@@ -69,7 +69,8 @@ module.exports.cloneBot = async (event, context) => {
         generation: masterToken.generation,
         dna,
         mutationDna: masterToken.mutationDna,
-        uuid
+        uuid,
+        relatedPrimeBot: masterToken.tokenId
       }
     };
 

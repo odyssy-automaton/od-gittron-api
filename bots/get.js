@@ -7,18 +7,25 @@ module.exports.get = async (event, context) => {
     const getRes = await getByTokenId(event.pathParameters.tokenId);
     const bot = getRes.Items[0];
 
-    if (!bot) {
-      throw "bot not found";
+    if (bot) {
+      return {
+        statusCode: 200,
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": process.env.ORIGIN
+        },
+        body: JSON.stringify(bot)
+      };
+    } else {
+      return {
+        statusCode: 200,
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": process.env.ORIGIN
+        },
+        body: "bot not found"
+      };
     }
-
-    return {
-      statusCode: 200,
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": process.env.ORIGIN
-      },
-      body: JSON.stringify(bot)
-    };
   } catch (err) {
     console.log(err);
     return {
