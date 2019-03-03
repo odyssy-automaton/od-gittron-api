@@ -114,8 +114,6 @@ const addMutationSvgs = (dnaString, svgs) => {
 };
 
 const getMetaAttributes = (dnaString, mutationDna, language, generation) => {
-  //TODO: Might break when we add new rares
-
   const { primaryColor, secondaryColor } = getColors(dnaString);
   const type = getType(dnaString);
   const [armor, origin, energy, backGear] = getMutationAttributes(mutationDna);
