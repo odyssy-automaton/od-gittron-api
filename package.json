@@ -16,5 +16,8 @@
     "etherscan-api": "^10.0.0",
     "moment": "^2.24.0",
     "sentiment": "^5.0.1"
+  },
+  "devDependencies": {
+    "serverless-domain-manager": "^2.6.13"
   }
 }

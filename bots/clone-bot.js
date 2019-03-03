@@ -1,17 +1,25 @@
 "use strict";
 require("dotenv").config();
 
-const AWS = require("aws-sdk");
 const { generateTokenID, alterDNA, getColors } = require("../util/meta-maker");
-const { uuidRand, getByTokenId } = require("../util/dyanamo-queries");
+const { uuidRand, getByTokenId, addBot } = require("../util/dyanamo-queries");
 
-const dynamoDb = new AWS.DynamoDB.DocumentClient();
-
-module.exports.workerSupporter = async (event, context) => {
+module.exports.cloneBot = async (event, context) => {
   const timestamp = new Date().getTime();
   const reqData = JSON.parse(event.body);
 
-  //TODO: Validation
+  if (!reqData.masterTokenId || !reqData.tokenType || !reqData.address) {
+    console.error("Validation Failed");
+    return {
+      statusCode: 400,
+      headers: {
+        "Content-Type": "text/plain",
+        "Access-Control-Allow-Origin": process.env.ORIGIN
+      },
+      body: "Failed validation."
+    };
+  }
+
   try {
     const uuid = await uuidRand();
     const getRes = await getByTokenId(reqData.masterTokenId);
@@ -54,29 +62,19 @@ module.exports.workerSupporter = async (event, context) => {
         tokenType: reqData.tokenType,
         mined: false,
         disabled: false,
+        hatched: false,
         orignalOwnerAddress: reqData.address,
         txHash: null,
         stats: masterToken.stats,
         generation: masterToken.generation,
         dna,
         mutationDna: masterToken.mutationDna,
-        uuid
+        uuid,
+        relatedPrimeBot: masterToken.tokenId
       }
     };
 
-    const putItem = new Promise((res, rej) => {
-      dynamoDb.put(params, function(err, data) {
-        if (err) {
-          console.log("Error", err);
-          rej(err);
-        } else {
-          console.log("Success", data);
-          res("Hi, insert data completed");
-        }
-      });
-    });
-
-    await putItem;
+    await addBot(params);
 
     return {
       statusCode: 200,

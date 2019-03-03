@@ -1,9 +1,6 @@
 "use strict";
 
-const AWS = require("aws-sdk");
 const { disableToken } = require("../util/dyanamo-queries");
-
-const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 module.exports.disable = async (event, context) => {
   try {

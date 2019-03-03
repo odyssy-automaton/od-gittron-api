@@ -1,7 +1,6 @@
 "use strict";
 require("dotenv").config();
 
-const AWS = require("aws-sdk");
 const GitHubData = require("../util/github-data");
 const {
   generateTokenID,
@@ -9,15 +8,12 @@ const {
   generateMutationDNA,
   getMetaAttributes
 } = require("../util/meta-maker");
-const { uuidRand } = require("../util/dyanamo-queries");
+const { uuidRand, addBot } = require("../util/dyanamo-queries");
 
-const dynamoDb = new AWS.DynamoDB.DocumentClient();
-
-module.exports.initToken = async (event, context) => {
+module.exports.generatePrimeBot = async (event, context) => {
   const timestamp = new Date().getTime();
   const reqData = JSON.parse(event.body);
 
-  // TODO: better validation here
   if (!reqData.repo || !reqData.repoOwner || !reqData.address) {
     console.error("Validation Failed");
     return {
@@ -82,6 +78,7 @@ module.exports.initToken = async (event, context) => {
         mined: false,
         verified: false,
         disabled: false,
+        hatched: false,
         orignalOwnerAddress: reqData.address,
         txHash: null,
         stats,
@@ -92,19 +89,7 @@ module.exports.initToken = async (event, context) => {
       }
     };
 
-    const putItem = new Promise((res, rej) => {
-      dynamoDb.put(params, function(err, data) {
-        if (err) {
-          console.log("Error", err);
-          rej(err);
-        } else {
-          console.log("Success", data);
-          res("Hi, insert data completed");
-        }
-      });
-    });
-
-    await putItem;
+    await addBot(params);
 
     return {
       statusCode: 200,
