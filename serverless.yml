@@ -167,6 +167,13 @@ functions:
           path: bots/verify/{tokenId}
           method: put
           cors: true
+  dashboardBots:
+    handler: bots/dashboard-bots.dashboardBots
+    events:
+      - http:
+          path: bots/dashboard
+          method: post
+          cors: true
 
 resources:
   Resources:
