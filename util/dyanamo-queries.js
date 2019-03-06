@@ -177,7 +177,6 @@ const deleteToken = function(tokenId, ghid) {
 
 module.exports = {
   tokenCount,
-  getAll,
   uuidRand,
   getByTokenId,
   addBot,
