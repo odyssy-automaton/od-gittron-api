@@ -39,71 +39,6 @@ provider:
         - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}/index/*"
 
 functions:
-  initToken:
-    handler: tokens/init-token.initToken
-    events:
-      - http:
-          path: tokens/new
-          method: post
-          cors: true
-  list:
-    handler: tokens/list.list
-    events:
-      - http:
-          path: tokens
-          method: get
-          cors: true
-  # //Keep
-  getByRepo:
-    handler: tokens/get-by-repo.getByRepo
-    events:
-      - http:
-          path: tokens/repo/{ghid}
-          method: get
-          cors: true
-  getByTokenId:
-    handler: tokens/get-by-tokenid.getByTokenId
-    events:
-      - http:
-          path: tokenid/{tokenId}
-          method: get
-          cors: true
-  generatePng:
-    handler: tokens/generate-png.generatePng
-    events:
-      - http:
-          path: generatepng
-          method: post
-          cors: true
-  checkTransactionStatus:
-    handler: tokens/check-transaction-status.checkTransactionStatus
-    events:
-      - http:
-          path: tokenstatus
-          method: put
-          cors: true
-  workerSupporter:
-    handler: tokens/worker-supporter.workerSupporter
-    events:
-      - http:
-          path: tokens/workersupporter
-          method: post
-          cors: true
-  verifyRepo:
-    handler: tokens/verify-repo.verifyRepo
-    events:
-      - http:
-          path: verifyrepo/{tokenId}
-          method: put
-          cors: true
-  disableToken:
-    handler: tokens/disable.disable
-    events:
-      - http:
-          path: disable/{tokenId}/{ghid}
-          method: put
-          cors: true
-
   generatePrimeBot:
     handler: bots/generate-prime-bot.generatePrimeBot
     events:
@@ -146,6 +81,13 @@ functions:
           path: bots/{tokenId}
           method: get
           cors: true
+  getBotsByRepo:
+    handler: bots/get-by-repo.getByRepo
+    events:
+      - http:
+          path: bots/repo/{ghid}
+          method: get
+          cors: true
   uri:
     handler: bots/token-uri.tokenUri
     events:
@@ -166,6 +108,13 @@ functions:
       - http:
           path: bots/verify/{tokenId}
           method: put
+          cors: true
+  dashboardBots:
+    handler: bots/dashboard-bots.dashboardBots
+    events:
+      - http:
+          path: bots/dashboard
+          method: post
           cors: true
 
 resources:
