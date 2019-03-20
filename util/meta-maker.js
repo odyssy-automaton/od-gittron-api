@@ -138,6 +138,7 @@ const getMetaAttributes = (dnaString, mutationDna, language, generation) => {
 
     if (trait[0] === "generation") {
       res.display_type = "number";
+      res.value = parseFloat(res.value);
     }
 
     if (res.value === "") {
