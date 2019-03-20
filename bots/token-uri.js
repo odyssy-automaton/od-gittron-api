@@ -35,6 +35,15 @@ module.exports.tokenUri = (event, context, callback) => {
           "https://s3.amazonaws.com/odyssy-assets/Gittron__BotCube.png";
       }
 
+      uriData.attributes.forEach(attribute => {
+        if (
+          attribute.display_type === "number" &&
+          typeof attribute.value === "string"
+        ) {
+          attribute.value = parseFloat(attribute.value);
+        }
+      });
+
       const response = {
         statusCode: 200,
         headers: {
