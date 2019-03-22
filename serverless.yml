@@ -116,6 +116,14 @@ functions:
           path: bots/dashboard
           method: post
           cors: true
+  disableBots:
+    handler: jobs/disable-bots.disableBots
+    events:
+      - schedule:
+        name: disable-abandoned-bots
+        description: "looks for unmined bots to disable"
+        enabled: false
+        rate: rate(30 minutes)
 
 resources:
   Resources:
