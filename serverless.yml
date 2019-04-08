@@ -120,10 +120,8 @@ functions:
     handler: jobs/disable-bots.disableBots
     events:
       - schedule:
-        name: disable-abandoned-bots
-        description: "looks for unmined bots to disable"
-        enabled: false
-        rate: rate(30 minutes)
+          rate: rate(30 minutes)
+          enabled: false
 
 resources:
   Resources:

@@ -78,9 +78,10 @@ module.exports.disableBots = async (event, context) => {
     console.log("proms.length");
     console.log(proms.length);
 
-    const res = await Promise.all(proms);
+    // const res = await Promise.all(proms);
 
-    return res;
+    // return res;
+    return;
   } catch (err) {
     console.log("err");
     console.log(err);
