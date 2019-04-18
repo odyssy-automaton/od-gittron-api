@@ -12,9 +12,12 @@ custom:
     ORIGIN:
       prod: "https://gittron.me"
       dev: "*"
-    URI_URL:
-      prod: "https://data.gittron.me/v1"
-      dev: "https://data.gittron.me/dev"
+    ETHEREUM_NETWORK:
+      prod: "homestead"
+      dev: "rinkeby"
+    CONTRACT_ADDRESS:
+      prod: "0x162d3e80d51f96240ae0a44ab3a5b1ea23920ce4"
+      dev: "0xfb6ff3d0eba6b8e69fceb04afe5f230611a34a36"
 
 provider:
   name: aws
@@ -24,6 +27,8 @@ provider:
   environment:
     DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
     ORIGIN: ${self:custom.myEnvironment.ORIGIN.${self:custom.myStage}}
+    ETHEREUM_NETWORK: ${self:custom.myEnvironment.ETHEREUM_NETWORK.${self:custom.myStage}}
+    CONTRACT_ADDRESS: ${self:custom.myEnvironment.CONTRACT_ADDRESS.${self:custom.myStage}}
 
   iamRoleStatements:
     - Effect: Allow
@@ -115,6 +120,13 @@ functions:
       - http:
           path: bots/dashboard
           method: post
+          cors: true
+  supporterCount:
+    handler: bots/supporter-count.supporterCount
+    events:
+      - http:
+          path: bots/supporter-count/{tokenId}
+          method: get
           cors: true
   disableBots:
     handler: jobs/disable-bots.disableBots
