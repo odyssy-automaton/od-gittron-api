@@ -116,6 +116,12 @@ functions:
           path: bots/dashboard
           method: post
           cors: true
+  disableBots:
+    handler: jobs/disable-bots.disableBots
+    events:
+      - schedule:
+          rate: rate(30 minutes)
+          enabled: false
 
 resources:
   Resources:
