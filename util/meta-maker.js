@@ -42,6 +42,7 @@ const generateDNA = (repoData, generation) => {
 
   dna[0] = generation;
   //adding 00 for 'HH - Type' on the end
+  //TODO: Change this when we get to type updates
   dna.push(0);
 
   return toDnaString(dna);

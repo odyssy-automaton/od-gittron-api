@@ -28,8 +28,6 @@ module.exports.hatch = async (event, context) => {
       ]
     };
 
-    console.log(htmlGenPayload);
-
     const html = await lambda
       .invoke({
         // FunctionName: "od-sls-htmlgen-dev-htmlgen",
