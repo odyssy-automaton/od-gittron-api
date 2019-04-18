@@ -23,12 +23,17 @@ module.exports.hatch = async (event, context) => {
       templateVars: [
         { name: "primaryColor", value: colors[0] },
         { name: "secondaryColor", value: colors[1] },
-        { name: "name", value: bot.repo }
+        { name: "name", value: bot.repo },
+        { name: "generation", value: bot.generation }
       ]
     };
+
+    console.log(htmlGenPayload);
+
     const html = await lambda
       .invoke({
-        FunctionName: "od-sls-htmlgen-dev-htmlgen",
+        // FunctionName: "od-sls-htmlgen-dev-htmlgen",
+        FunctionName: "od-sls-htmlgen-test-dev-htmlgen",
         Payload: JSON.stringify(htmlGenPayload, null, 2)
       })
       .promise();

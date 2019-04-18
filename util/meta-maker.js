@@ -55,6 +55,13 @@ const alterDNA = dnaString => {
   return toDnaString(dna);
 };
 
+const morphDNA = dnaString => {
+  let dna = dnaString.split("-");
+  dna[0] = +dna[0] + 1;
+
+  return toDnaString(dna);
+};
+
 const generateMutationDNA = (generation, previousMutationDNA) => {
   const mutations = Object.entries(mutationMappings);
 
@@ -62,17 +69,43 @@ const generateMutationDNA = (generation, previousMutationDNA) => {
     ? fromDnaString(previousMutationDNA)
     : new Array(mutations.length).fill(0);
 
-  new Array(+generation + 1).fill(0).forEach(rolls => {
-    let randomIndex = getRandomInt(mutations.length);
+  const openDnaSlots = mutationDNA
+    .map((dna, i) => {
+      let mutation = mapToMutationSvg(dna, mutations[i][0]);
+      return mutation.name.length;
+    })
+    .includes(0);
 
-    if (mutationDNA[randomIndex]) {
-      return;
-    }
+  if (openDnaSlots) {
+    new Array(+generation + 1).fill(0).some(rolls => {
+      let randomIndex = getOpenSlot(mutations.length, mutationDNA, mutations);
 
-    mutationDNA[randomIndex] = getRandomInt(99);
-  });
+      mutationDNA[randomIndex] = getRandomInt(99);
+
+      let newMutation = mapToMutationSvg(
+        mutationDNA[randomIndex],
+        mutations[randomIndex][0]
+      );
+
+      return newMutation.name.length;
+    });
+  }
 
   return toDnaString(mutationDNA);
+};
+
+const getOpenSlot = (mutationCount, mutationDNA, mutations) => {
+  let randomIndex = getRandomInt(mutationCount);
+  let currentMutation = mapToMutationSvg(
+    mutationDNA[randomIndex],
+    mutations[randomIndex][0]
+  );
+
+  if (currentMutation.name.length) {
+    return getOpenSlot(mutationCount, mutationDNA, mutations);
+  } else {
+    return randomIndex;
+  }
 };
 
 const generateSvgPayload = dnaString => {
@@ -217,6 +250,7 @@ module.exports = {
   generateTokenID,
   generateDNA,
   alterDNA,
+  morphDNA,
   generateMutationDNA,
   generateSvgPayload,
   addMutationSvgs,
