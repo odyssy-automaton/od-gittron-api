@@ -80,6 +80,7 @@ module.exports.morph = async (event, context) => {
         updatedAt: timestamp,
         tokenType: tokenType,
         mined: false,
+        verified: true,
         disabled: false,
         hatched: false,
         orignalOwnerAddress: reqData.address,
