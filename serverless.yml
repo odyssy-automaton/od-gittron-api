@@ -39,12 +39,12 @@ provider:
         - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}/index/*"
 
 functions:
-  generatePrimeBot:
-    handler: bots/generate-prime-bot.generatePrimeBot
+  all:
+    handler: bots/all.all
     events:
       - http:
-          path: bots/new-prime
-          method: post
+          path: bots
+          method: get
           cors: true
   cloneBot:
     handler: bots/clone-bot.cloneBot
@@ -53,18 +53,39 @@ functions:
           path: bots/clone
           method: post
           cors: true
-  updateTxStatus:
-    handler: bots/update-tx-status.updateTxStatus
+  dashboardBots:
+    handler: bots/dashboard-bots.dashboardBots
     events:
       - http:
-          path: bots/update-tx-status/{tokenId}
-          method: put
+          path: bots/dashboard
+          method: post
+          cors: true
+  generatePrimeBot:
+    handler: bots/generate-prime-bot.generatePrimeBot
+    events:
+      - http:
+          path: bots/new-prime
+          method: post
+          cors: true
+  getBotsByRepo:
+    handler: bots/get-by-repo.getByRepo
+    events:
+      - http:
+          path: bots/repo/{ghid}
+          method: get
           cors: true
   getTxStatus:
     handler: bots/get-tx-status.getTxStatus
     events:
       - http:
           path: bots/get-tx-status/{tokenId}
+          method: get
+          cors: true
+  get:
+    handler: bots/get.get
+    events:
+      - http:
+          path: bots/{tokenId}
           method: get
           cors: true
   hatch:
@@ -74,19 +95,19 @@ functions:
           path: bots/hatch/{tokenId}
           method: put
           cors: true
-  get:
-    handler: bots/get.get
+  morph:
+    handler: bots/dashboard-bots.dashboardBots
     events:
       - http:
-          path: bots/{tokenId}
-          method: get
+          path: bots/dashboard
+          method: post
           cors: true
-  getBotsByRepo:
-    handler: bots/get-by-repo.getByRepo
+  updateTxStatus:
+    handler: bots/update-tx-status.updateTxStatus
     events:
       - http:
-          path: bots/repo/{ghid}
-          method: get
+          path: bots/update-tx-status/{tokenId}
+          method: put
           cors: true
   uri:
     handler: bots/token-uri.tokenUri
@@ -95,26 +116,12 @@ functions:
           path: uri/{tokenId}
           method: get
           cors: true
-  all:
-    handler: bots/all.all
-    events:
-      - http:
-          path: bots
-          method: get
-          cors: true
   verifyBot:
     handler: bots/verify-bot.verifyBot
     events:
       - http:
           path: bots/verify/{tokenId}
           method: put
-          cors: true
-  dashboardBots:
-    handler: bots/dashboard-bots.dashboardBots
-    events:
-      - http:
-          path: bots/dashboard
-          method: post
           cors: true
 
 resources:
