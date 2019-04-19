@@ -23,7 +23,7 @@ module.exports.hatch = async (event, context) => {
       templateVars: [
         { name: "primaryColor", value: colors[0] },
         { name: "secondaryColor", value: colors[1] },
-        { name: "name", value: bot.repo },
+        { name: "name", value: bot.repo }
         { name: "generation", value: bot.generation }
       ]
     };
