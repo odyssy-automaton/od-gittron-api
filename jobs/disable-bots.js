@@ -8,6 +8,8 @@ module.exports.disableBots = async (event, context) => {
   const timestamp = new Date().getTime();
   const oneHourAgo = new Date().getTime() - 3600000;
 
+  // Need to check ancestor/child bots here
+
   try {
     const params = {
       TableName: process.env.DYNAMODB_TABLE,
