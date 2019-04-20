@@ -68,7 +68,7 @@ module.exports.updateTxStatus = async (event, context) => {
 
     await updateBot(updateParams);
 
-    if (bot.relatedAncestorBot) {
+    if (reqData.disabled && bot.relatedAncestorBot) {
       const getAncestorRes = await getByTokenId(bot.relatedAncestorBot);
       const ancestorBot = getAncestorRes.Items[0];
 
@@ -79,11 +79,7 @@ module.exports.updateTxStatus = async (event, context) => {
             tokenId: ancestorBot.tokenId,
             ghid: ancestorBot.ghid
           },
-          ExpressionAttributeValues: {
-            ":updatedAt": new Date().getTime(),
-            ":relatedChildBot": null
-          },
-          UpdateExpression: `SET relatedChildBot = :relatedChildBot, updatedAt = :updatedAt`,
+          UpdateExpression: "REMOVE relatedChildBot",
           ReturnValues: "ALL_NEW"
         };
 
