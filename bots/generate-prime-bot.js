@@ -81,6 +81,7 @@ module.exports.generatePrimeBot = async (event, context) => {
         hatched: false,
         orignalOwnerAddress: reqData.address,
         txHash: null,
+        forked: githubber.repoData.fork,
         stats,
         generation,
         dna,
