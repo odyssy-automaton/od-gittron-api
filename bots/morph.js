@@ -86,6 +86,7 @@ module.exports.morph = async (event, context) => {
         orignalOwnerAddress: reqData.address,
         txHash: null,
         stats: ancestorToken.stats,
+        forked: ancestorToken.forked,
         generation: generation,
         dna,
         mutationDna: mutationDna,
