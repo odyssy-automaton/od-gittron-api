@@ -66,6 +66,13 @@ functions:
           path: bots/dashboard
           method: post
           cors: true
+  featuredBots:
+    handler: bots/featured-bots.featuredBots
+    events:
+      - http:
+          path: bots/featured
+          method: get
+          cors: true
   generatePrimeBot:
     handler: bots/generate-prime-bot.generatePrimeBot
     events:
