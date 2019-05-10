@@ -67,6 +67,7 @@ module.exports.cloneBot = async (event, context) => {
         txHash: null,
         stats: masterToken.stats,
         generation: masterToken.generation,
+        forked: masterToken.forked,
         dna,
         mutationDna: masterToken.mutationDna,
         uuid,

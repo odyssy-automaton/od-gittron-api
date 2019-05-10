@@ -1,20 +1,24 @@
 "use strict";
 require("dotenv").config();
 
-const GitHubData = require("../util/github-data");
 const {
   generateTokenID,
-  generateDNA,
+  morphDNA,
   generateMutationDNA,
   getMetaAttributes
 } = require("../util/meta-maker");
-const { uuidRand, addBot } = require("../util/dyanamo-queries");
+const {
+  uuidRand,
+  getByTokenId,
+  addBot,
+  updateBot
+} = require("../util/dyanamo-queries");
 
-module.exports.generatePrimeBot = async (event, context) => {
+module.exports.morph = async (event, context) => {
   const timestamp = new Date().getTime();
   const reqData = JSON.parse(event.body);
 
-  if (!reqData.repo || !reqData.repoOwner || !reqData.address) {
+  if (!reqData.ancestorTokenId || !reqData.address) {
     console.error("Validation Failed");
     return {
       statusCode: 400,
@@ -26,37 +30,37 @@ module.exports.generatePrimeBot = async (event, context) => {
     };
   }
 
-  const githubber = new GitHubData({
-    repo: reqData.repo,
-    owner: reqData.repoOwner
-  });
-
   try {
-    const { data } = await githubber.getRepo();
-    githubber.repoData = data;
-
-    const generation = reqData.generation || 0;
-    const tokenType = "prime";
     const uuid = await uuidRand();
+    const getRes = await getByTokenId(reqData.ancestorTokenId);
+    const ancestorToken = getRes.Items[0];
+    const tokenType = "prime";
+    const generation = (+ancestorToken.generation + 1).toString();
+
     const tokenId = generateTokenID(
-      githubber.repoData.id,
+      ancestorToken.ghid,
       reqData.address,
       tokenType,
       uuid,
       generation
     );
-    const stats = await githubber.generateStats();
-    const dna = generateDNA(stats, generation);
-    const mutationDna = generateMutationDNA(generation);
+
+    const dna = morphDNA(ancestorToken.dna);
+
+    const mutationDna = generateMutationDNA(
+      generation,
+      ancestorToken.mutationDna
+    );
+
     const metaAttributes = getMetaAttributes(
       dna,
       mutationDna,
-      stats.language,
+      ancestorToken.stats.language,
       generation
     );
 
     const tokenUriData = {
-      name: `Mecha ${reqData.repo} ${tokenType}`,
+      name: `Mecha ${ancestorToken.repo} ${tokenType}`,
       description:
         "The year is 3369 and, throughout the universe, all biological life has been decimated. It's up to the Prime Bots to buidl their own future. They'll need help from the Buidl and Support Bots in order to survive.",
       image: `https://s3.amazonaws.com/od-flat-svg/${tokenId}.png`,
@@ -67,30 +71,47 @@ module.exports.generatePrimeBot = async (event, context) => {
     const params = {
       TableName: process.env.DYNAMODB_TABLE,
       Item: {
-        ghid: githubber.repoData.id.toString(),
+        ghid: ancestorToken.ghid.toString(),
         tokenId: tokenId.toString(),
-        repo: reqData.repo,
-        repoOwner: reqData.repoOwner,
-        tokenUriData: tokenUriData,
+        repo: ancestorToken.repo,
+        repoOwner: ancestorToken.repoOwner,
+        tokenUriData,
         createdAt: timestamp,
         updatedAt: timestamp,
-        tokenType,
+        tokenType: tokenType,
         mined: false,
-        verified: false,
+        verified: true,
         disabled: false,
         hatched: false,
         orignalOwnerAddress: reqData.address,
         txHash: null,
-        forked: githubber.repoData.fork,
-        stats,
-        generation,
+        stats: ancestorToken.stats,
+        forked: ancestorToken.forked,
+        generation: generation,
         dna,
-        mutationDna,
-        uuid
+        mutationDna: mutationDna,
+        uuid,
+        relatedAncestorBot: ancestorToken.tokenId
       }
     };
 
     await addBot(params);
+
+    const ancestorBotParams = {
+      TableName: process.env.DYNAMODB_TABLE,
+      Key: {
+        tokenId: ancestorToken.tokenId,
+        ghid: ancestorToken.ghid
+      },
+      ExpressionAttributeValues: {
+        ":relatedChildBot": tokenId,
+        ":updatedAt": timestamp
+      },
+      UpdateExpression: `SET relatedChildBot = :relatedChildBot, updatedAt = :updatedAt`,
+      ReturnValues: "ALL_NEW"
+    };
+
+    await updateBot(ancestorBotParams);
 
     return {
       statusCode: 200,

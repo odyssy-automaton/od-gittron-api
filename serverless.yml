@@ -12,9 +12,12 @@ custom:
     ORIGIN:
       prod: "https://gittron.me"
       dev: "*"
-    URI_URL:
-      prod: "https://data.gittron.me/v1"
-      dev: "https://data.gittron.me/dev"
+    ETHEREUM_NETWORK:
+      prod: "homestead"
+      dev: "rinkeby"
+    CONTRACT_ADDRESS:
+      prod: "0x162d3e80d51f96240ae0a44ab3a5b1ea23920ce4"
+      dev: "0xfb6ff3d0eba6b8e69fceb04afe5f230611a34a36"
 
 provider:
   name: aws
@@ -24,6 +27,8 @@ provider:
   environment:
     DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
     ORIGIN: ${self:custom.myEnvironment.ORIGIN.${self:custom.myStage}}
+    ETHEREUM_NETWORK: ${self:custom.myEnvironment.ETHEREUM_NETWORK.${self:custom.myStage}}
+    CONTRACT_ADDRESS: ${self:custom.myEnvironment.CONTRACT_ADDRESS.${self:custom.myStage}}
 
   iamRoleStatements:
     - Effect: Allow
@@ -39,12 +44,13 @@ provider:
         - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}/index/*"
 
 functions:
-  generatePrimeBot:
-    handler: bots/generate-prime-bot.generatePrimeBot
+  ##end points
+  all:
+    handler: bots/all.all
     events:
       - http:
-          path: bots/new-prime
-          method: post
+          path: bots
+          method: get
           cors: true
   cloneBot:
     handler: bots/clone-bot.cloneBot
@@ -53,18 +59,39 @@ functions:
           path: bots/clone
           method: post
           cors: true
-  updateTxStatus:
-    handler: bots/update-tx-status.updateTxStatus
+  dashboardBots:
+    handler: bots/dashboard-bots.dashboardBots
     events:
       - http:
-          path: bots/update-tx-status/{tokenId}
-          method: put
+          path: bots/dashboard
+          method: post
+          cors: true
+  generatePrimeBot:
+    handler: bots/generate-prime-bot.generatePrimeBot
+    events:
+      - http:
+          path: bots/new-prime
+          method: post
+          cors: true
+  getBotsByRepo:
+    handler: bots/get-by-repo.getByRepo
+    events:
+      - http:
+          path: bots/repo/{ghid}
+          method: get
           cors: true
   getTxStatus:
     handler: bots/get-tx-status.getTxStatus
     events:
       - http:
           path: bots/get-tx-status/{tokenId}
+          method: get
+          cors: true
+  get:
+    handler: bots/get.get
+    events:
+      - http:
+          path: bots/{tokenId}
           method: get
           cors: true
   hatch:
@@ -74,32 +101,32 @@ functions:
           path: bots/hatch/{tokenId}
           method: put
           cors: true
-  get:
-    handler: bots/get.get
+  morph:
+    handler: bots/morph.morph
     events:
       - http:
-          path: bots/{tokenId}
+          path: bots/morph
+          method: post
+          cors: true
+  supporterCount:
+    handler: bots/supporter-count.supporterCount
+    events:
+      - http:
+          path: bots/supporter-count/{tokenId}
           method: get
           cors: true
-  getBotsByRepo:
-    handler: bots/get-by-repo.getByRepo
+  updateTxStatus:
+    handler: bots/update-tx-status.updateTxStatus
     events:
       - http:
-          path: bots/repo/{ghid}
-          method: get
+          path: bots/update-tx-status/{tokenId}
+          method: put
           cors: true
   uri:
     handler: bots/token-uri.tokenUri
     events:
       - http:
           path: uri/{tokenId}
-          method: get
-          cors: true
-  all:
-    handler: bots/all.all
-    events:
-      - http:
-          path: bots
           method: get
           cors: true
   verifyBot:
@@ -109,13 +136,14 @@ functions:
           path: bots/verify/{tokenId}
           method: put
           cors: true
-  dashboardBots:
-    handler: bots/dashboard-bots.dashboardBots
+
+  ##jobs
+  disableBots:
+    handler: jobs/disable-bots.disableBots
     events:
-      - http:
-          path: bots/dashboard
-          method: post
-          cors: true
+      - schedule:
+          rate: rate(30 minutes)
+          enabled: false
 
 resources:
   Resources:

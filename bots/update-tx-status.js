@@ -68,6 +68,25 @@ module.exports.updateTxStatus = async (event, context) => {
 
     await updateBot(updateParams);
 
+    if (reqData.disabled && bot.relatedAncestorBot) {
+      const getAncestorRes = await getByTokenId(bot.relatedAncestorBot);
+      const ancestorBot = getAncestorRes.Items[0];
+
+      if (ancestorBot) {
+        const updateAncestorParams = {
+          TableName: process.env.DYNAMODB_TABLE,
+          Key: {
+            tokenId: ancestorBot.tokenId,
+            ghid: ancestorBot.ghid
+          },
+          UpdateExpression: "REMOVE relatedChildBot",
+          ReturnValues: "ALL_NEW"
+        };
+
+        await updateBot(updateAncestorParams);
+      }
+    }
+
     return {
       statusCode: 200,
       headers: {
