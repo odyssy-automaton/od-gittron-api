@@ -96,9 +96,9 @@ module.exports.morph = async (event, context) => {
     };
 
     if (ancestorToken.featured) {
-      params.Item.feature = true;
-      params.featuredDesc = ancestorToken.featuredDesc;
-      params.featuredTitle = ancestorToken.featuredTitle;
+      params.Item.featured = true;
+      params.Item.featuredDesc = ancestorToken.featuredDesc;
+      params.Item.featuredTitle = ancestorToken.featuredTitle;
     }
 
     await addBot(params);
