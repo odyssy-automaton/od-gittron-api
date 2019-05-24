@@ -95,6 +95,12 @@ module.exports.morph = async (event, context) => {
       }
     };
 
+    if (ancestorToken.featured) {
+      params.Item.feature = true;
+      params.featuredDesc = ancestorToken.featuredDesc;
+      params.featuredTitle = ancestorToken.featuredTitle;
+    }
+
     await addBot(params);
 
     const ancestorBotParams = {
@@ -110,6 +116,13 @@ module.exports.morph = async (event, context) => {
       UpdateExpression: `SET relatedChildBot = :relatedChildBot, updatedAt = :updatedAt`,
       ReturnValues: "ALL_NEW"
     };
+
+    if (ancestorToken.featured) {
+      ancestorBotParams.ExpressionAttributeValues[":featured"] = false;
+      ancestorBotParams.UpdateExpression = `${
+        ancestorBotParams.UpdateExpression
+      }, featured = :featured`;
+    }
 
     await updateBot(ancestorBotParams);
 
