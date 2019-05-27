@@ -43,6 +43,7 @@ provider:
       Resource:
         - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
         - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}/index/*"
+        - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_USER_TABLE}"
 
 functions:
   ##end points
@@ -114,6 +115,13 @@ functions:
     events:
       - http:
           path: bots/morph
+          method: post
+          cors: true
+  emailSignUp:
+    handler: bots/email-sign-up.emailSignUp
+    events:
+      - http:
+          path: bots/email-sign-up
           method: post
           cors: true
   supporterCount:

@@ -10,7 +10,7 @@ const {
 const {
   uuidRand,
   getByTokenId,
-  addBot,
+  addRecord,
   updateBot
 } = require("../util/dyanamo-queries");
 
@@ -101,7 +101,7 @@ module.exports.morph = async (event, context) => {
       params.Item.featuredTitle = ancestorToken.featuredTitle;
     }
 
-    await addBot(params);
+    await addRecord(params);
 
     const ancestorBotParams = {
       TableName: process.env.DYNAMODB_TABLE,
