@@ -10,7 +10,7 @@ const {
 const {
   uuidRand,
   getByTokenId,
-  addBot,
+  addRecord,
   updateBot
 } = require("../util/dyanamo-queries");
 
@@ -95,7 +95,13 @@ module.exports.morph = async (event, context) => {
       }
     };
 
-    await addBot(params);
+    if (ancestorToken.featured) {
+      params.Item.featured = true;
+      params.Item.featuredDesc = ancestorToken.featuredDesc;
+      params.Item.featuredTitle = ancestorToken.featuredTitle;
+    }
+
+    await addRecord(params);
 
     const ancestorBotParams = {
       TableName: process.env.DYNAMODB_TABLE,
@@ -110,6 +116,13 @@ module.exports.morph = async (event, context) => {
       UpdateExpression: `SET relatedChildBot = :relatedChildBot, updatedAt = :updatedAt`,
       ReturnValues: "ALL_NEW"
     };
+
+    if (ancestorToken.featured) {
+      ancestorBotParams.ExpressionAttributeValues[":featured"] = false;
+      ancestorBotParams.UpdateExpression = `${
+        ancestorBotParams.UpdateExpression
+      }, featured = :featured`;
+    }
 
     await updateBot(ancestorBotParams);
 

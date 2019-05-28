@@ -8,7 +8,7 @@ const {
   generateMutationDNA,
   getMetaAttributes
 } = require("../util/meta-maker");
-const { uuidRand, addBot } = require("../util/dyanamo-queries");
+const { uuidRand, addRecord } = require("../util/dyanamo-queries");
 
 module.exports.generatePrimeBot = async (event, context) => {
   const timestamp = new Date().getTime();
@@ -90,7 +90,7 @@ module.exports.generatePrimeBot = async (event, context) => {
       }
     };
 
-    await addBot(params);
+    await addRecord(params);
 
     return {
       statusCode: 200,

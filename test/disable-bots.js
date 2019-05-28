@@ -1,4 +1,6 @@
 const AWS = require("aws-sdk");
+const ethers = require("ethers");
+const abi = require("../util/abi");
 
 var credentials = new AWS.SharedIniFileCredentials({ profile: "default" });
 AWS.config.credentials = credentials;
@@ -9,6 +11,8 @@ const tableName = "gittron-bot-api-dev";
 // const tableName = "gittron-bot-api-prod";
 
 const disableBots = async () => {
+  const provider = ethers.getDefaultProvider(process.env.ETHEREUM_NETWORK);
+  const contract = new ethers.Contract(contractAddress, abi, provider);
   const timestamp = new Date().getTime();
   const oneHourAgo = new Date().getTime() - 3600000;
 
