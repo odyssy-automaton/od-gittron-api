@@ -48,6 +48,28 @@ const getByTokenId = function(tokenId) {
   });
 };
 
+const getContactByAddress = function(address) {
+  const params = {
+    TableName: process.env.DYNAMODB_USER_TABLE,
+    KeyConditionExpression: "address = :hkey",
+    ExpressionAttributeValues: {
+      ":hkey": address
+    }
+  };
+
+  return new Promise((res, rej) => {
+    dynamoDb.query(params, function(err, data) {
+      if (err) {
+        console.log("Error", err);
+        rej(err);
+      } else {
+        console.log("Success", data);
+        res(data);
+      }
+    });
+  });
+};
+
 const addRecord = function(params) {
   return new Promise((res, rej) => {
     dynamoDb.put(params, function(err, data) {
@@ -110,6 +132,7 @@ module.exports = {
   uuidRand,
   allBots,
   getByTokenId,
+  getContactByAddress,
   addRecord,
   disableBot,
   updateBot
