@@ -2,7 +2,11 @@
 require("dotenv").config();
 
 const { generateTokenID, alterDNA, getColors } = require("../util/meta-maker");
-const { uuidRand, getByTokenId, addBot } = require("../util/dyanamo-queries");
+const {
+  uuidRand,
+  getByTokenId,
+  addRecord
+} = require("../util/dyanamo-queries");
 
 module.exports.cloneBot = async (event, context) => {
   const timestamp = new Date().getTime();
@@ -75,7 +79,7 @@ module.exports.cloneBot = async (event, context) => {
       }
     };
 
-    await addBot(params);
+    await addRecord(params);
 
     return {
       statusCode: 200,

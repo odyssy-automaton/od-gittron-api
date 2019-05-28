@@ -48,7 +48,7 @@ const getByTokenId = function(tokenId) {
   });
 };
 
-const addBot = function(params) {
+const addRecord = function(params) {
   return new Promise((res, rej) => {
     dynamoDb.put(params, function(err, data) {
       if (err) {
@@ -110,7 +110,7 @@ module.exports = {
   uuidRand,
   allBots,
   getByTokenId,
-  addBot,
+  addRecord,
   disableBot,
   updateBot
 };
