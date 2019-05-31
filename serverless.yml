@@ -46,7 +46,7 @@ provider:
         - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_USER_TABLE}"
 
 functions:
-  ##api
+  ##bot api
   all:
     handler: bots/all.all
     events:
@@ -117,13 +117,6 @@ functions:
           path: bots/morph
           method: post
           cors: true
-  emailSignUp:
-    handler: bots/email-sign-up.emailSignUp
-    events:
-      - http:
-          path: bots/email-sign-up
-          method: post
-          cors: true
   supporterCount:
     handler: bots/supporter-count.supporterCount
     events:
@@ -153,9 +146,31 @@ functions:
           method: put
           cors: true
 
+  ##contact api
+  emailSignUp:
+    handler: contacts/email-sign-up.emailSignUp
+    events:
+      - http:
+          path: contacts/email-sign-up
+          method: post
+          cors: true
+  getContact:
+    handler: contacts/get-contact.getContact
+    events:
+      - http:
+          path: contacts/{address}
+          method: get
+          cors: true
+
   ##jobs
   disableBots:
     handler: jobs/disable-bots.disableBots
+    events:
+      - schedule:
+          rate: rate(30 minutes)
+          enabled: true
+  enableBots:
+    handler: jobs/enable-bots.enableBots
     events:
       - schedule:
           rate: rate(30 minutes)
