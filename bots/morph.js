@@ -99,6 +99,7 @@ module.exports.morph = async (event, context) => {
       params.Item.featured = true;
       params.Item.featuredDesc = ancestorToken.featuredDesc;
       params.Item.featuredTitle = ancestorToken.featuredTitle;
+      params.Item.featuredOrder = ancestorToken.featuredOrder;
     }
 
     await addRecord(params);
