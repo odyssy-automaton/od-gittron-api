@@ -169,6 +169,12 @@ functions:
       - schedule:
           rate: rate(30 minutes)
           enabled: true
+  enableBots:
+    handler: jobs/enable-bots.enableBots
+    events:
+      - schedule:
+          rate: rate(30 minutes)
+          enabled: true
 
 resources:
   Resources:
